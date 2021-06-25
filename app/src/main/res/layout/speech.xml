@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutSpeechOptions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@drawable/background_dialog">
+
+    <TextView
+        android:id="@+id/LayoutName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:includeFontPadding="true"
+        android:padding="@dimen/_4sdp"
+        android:text="Voice Searching"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_15ssp" />
+
+    <ImageView
+        android:id="@+id/ImageSettingsInfo"
+        android:layout_width="@dimen/_17sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_toEndOf="@id/LayoutName"
+        android:contentDescription="None"
+        android:src="@drawable/info"
+        app:tint="@color/colorIcons" />
+
+
+    <ImageView
+        android:id="@+id/ImageSettingsCancel"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_toEndOf="@id/LayoutName"
+        android:contentDescription="None"
+        android:src="@drawable/cancel_settings" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="@dimen/_55sdp"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_below="@id/LayoutName"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:src="@drawable/mic_stoped"/>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="@dimen/_55sdp"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_below="@id/imageView1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:src="@drawable/mic_listening"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/listening"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@id/imageView1"
+        android:layout_centerInParent="true"
+        android:src="@drawable/listening"
+        app:tint="@color/colorDelete"/>
+
+    <TextView
+        android:id="@+id/listeningText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView2"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:includeFontPadding="true"
+        android:padding="@dimen/_4sdp"
+        android:text="Listening......"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_13ssp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/LanguageRecorededText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listeningText"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15ssp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:includeFontPadding="true"
+        android:padding="@dimen/_4sdp"
+        android:visibility="gone"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_10ssp" />
+
+    <TextView
+        android:id="@+id/LanguageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LanguageRecorededText"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_25ssp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:includeFontPadding="true"
+        android:padding="@dimen/_4sdp"
+        android:text="Default Language Choosen"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_11ssp" />
+
+</RelativeLayout>

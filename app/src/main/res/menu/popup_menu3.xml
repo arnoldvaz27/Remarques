@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/Center"
+        android:icon="@drawable/center"
+        android:title="Title"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/Right"
+        android:icon="@drawable/right"
+        android:title="Sub Title"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/Left"
+        android:icon="@drawable/left"
+        android:title="Note"
+        app:showAsAction="always" />
+
+</menu>
