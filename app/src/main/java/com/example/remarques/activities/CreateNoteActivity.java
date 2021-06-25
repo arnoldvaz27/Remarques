@@ -362,7 +362,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
-
         imageSpeakOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1077,7 +1076,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                     FileOutputStream outputStream = null;
                     File file = Environment.getExternalStorageDirectory();
-                    File dir = new File(file.getAbsolutePath() + "/My Notes" + "/Gallery");
+                    File dir = new File(file.getAbsolutePath() + File.separator+"Remarques" +File.separator+ "Gallery");
                     dir.mkdir();
                     String fileName = String.format(randCode + ".png", System.currentTimeMillis());
                     File outFile = new File(dir, fileName);
@@ -1141,7 +1140,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         FileOutputStream outputStream = null;
         File file = Environment.getExternalStorageDirectory();
-        File dir = new File(file.getAbsolutePath() + "/My Notes" + "/Favorite Pictures");
+        File dir = new File(file.getAbsolutePath() + File.separator+"Remarques" +File.separator+ "Favorite Pictures");
         dir.mkdir();
         String fileName = String.format(randCode + ".png", System.currentTimeMillis());
         File outFile = new File(dir, fileName);
@@ -1840,7 +1839,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 showAddURLDialog();
             }
         });
-        /*if (!inputNoteText.getText().toString().isEmpty() && !inputNoteTitle.getText().toString().isEmpty()) {
+        if (!inputNoteText.getText().toString().isEmpty() && !inputNoteTitle.getText().toString().isEmpty()) {
             sheetView.findViewById(R.id.SavingLayout).setVisibility(View.VISIBLE);
             sheetView.findViewById(R.id.layoutSavePdf).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1862,7 +1861,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     }
                 }
             });
-        }*/
+        }
 /*        if(!inputNoteText.getText().toString().isEmpty() && !inputNoteTitle.getText().toString().isEmpty())
         {
             sheetView.findViewById(R.id.layoutSaveWord).setVisibility(View.VISIBLE);
@@ -1925,7 +1924,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void createQRCode() throws Exception {
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/My Notes" + "/QR Codes");
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques"+File.separator+"QR Codes");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
@@ -1967,7 +1966,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "TEXT copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + "/My Notes/" + "Text Files");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "Text Files");
             if (!docsFolder.exists()) {
                 docsFolder.mkdir();
             }
@@ -2339,7 +2338,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + "/My Notes/" + "PDF Files");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "PDF Files");
             if (!docsFolder.exists()) {
                 docsFolder.mkdir();
             }

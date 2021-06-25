@@ -439,6 +439,73 @@
         </FrameLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/SavingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+
+        <FrameLayout
+            android:id="@+id/layoutSavePdf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/_21sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:contentDescription="None"
+                android:src="@drawable/pdf"
+                app:tint="@color/whatsApp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_36sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:includeFontPadding="false"
+                android:text="Save as PDF"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layoutSaveTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/_21sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:contentDescription="None"
+                android:src="@drawable/text"
+                app:tint="@color/colorNoteColor9" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_36sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:includeFontPadding="false"
+                android:text="Save as TXT"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp" />
+
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutUnPin"
@@ -484,7 +551,7 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/_15sdp">
+        android:layout_marginTop="@dimen/_6sdp">
 
         <ImageView
             android:layout_width="@dimen/_23sdp"
@@ -493,7 +560,6 @@
             android:contentDescription="None"
             android:src="@drawable/unpin"
             app:tint="@color/colorNoteColor10" />
-
 
         <TextView
             android:layout_width="match_parent"
@@ -655,7 +721,7 @@
         android:orientation="horizontal"
         android:visibility="gone"
         tools:ignore="UseCompoundDrawables"
-        android:layout_marginTop="@dimen/_12sdp">
+        android:layout_marginTop="@dimen/_6sdp">
 
         <ImageView
             android:layout_width="@dimen/_23sdp"

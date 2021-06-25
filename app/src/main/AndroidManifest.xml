@@ -9,7 +9,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -20,16 +20,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.remarques.activities.WordCounter" />
-        <activity android:name="com.example.remarques.activities.AppSettings" />
+
+        <activity android:name=".activities.WordCounter" />
+        <activity android:name=".activities.AppSettings" />
         <activity
-            android:name="com.example.remarques.activities.CreateNoteActivity"
+            android:name=".activities.CreateNoteActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.remarques.activities.MainActivity"
-            android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="stateHidden">
+            android:name=".activities.MainActivity"/>
+        <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

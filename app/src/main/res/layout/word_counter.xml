@@ -229,7 +229,7 @@
                         app:tint="@color/colorIcons" />
 
                     <ImageView
-                        android:id="@+id/imagePaster"
+                        android:id="@+id/imagePaste"
                         android:layout_width="@dimen/_23sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginStart="@dimen/_14sdp"
