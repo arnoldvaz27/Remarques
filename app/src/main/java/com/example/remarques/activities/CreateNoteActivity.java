@@ -9,6 +9,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -83,6 +84,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import top.defaults.colorpicker.ColorPickerPopup;
@@ -108,13 +110,14 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int CAMERA_REQUEST = 1888;
     private View sheetView;
-
+    private String show = "No";
     private AlertDialog dialogAddURL;
     private AlertDialog dialogDeleteNote, dialogSettingsNote, dialogResetNote, UrlOption, ImageOption;
 
     private final int REQ_CODE_TITLE = 100;
     private final int REQ_CODE_SUB_TITLE = 101;
     private final int REQ_CODE_NOTE = 102;
+    public static File pdfFiles;
 
     private Typeface typeface1, typeface2, typeface3, typeface4, typeface5, typeface6;
     private Note alreadyAvailableNote;
@@ -127,7 +130,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private InputStream inputStream;
     private Bitmap bitmap;
     private Uri selectImageUri;
-
+    File sdCard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,7 +197,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         checkBoxText = findViewById(R.id.checkboxText);
         moreIcons = findViewById(R.id.more_icons);
         mDefaultColor = 0;
-
+        sdCard = Environment.getExternalStorageDirectory();
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
         richText = getShared3.getString("rich text", null);
 
@@ -882,6 +885,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (alreadyAvailableNote != null && alreadyAvailableNote.getColor() != null && !alreadyAvailableNote.getColor().trim().isEmpty()) {
             ChangingDBBackground();
         }
+
 
 
         if (getIntent().getBooleanExtra("isFromQuickActions", false)) {
@@ -2414,6 +2418,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         Intent i = new Intent(CreateNoteActivity.this, MainActivity.class);
         startActivity(i);
     }
+
 }
 /*
 
