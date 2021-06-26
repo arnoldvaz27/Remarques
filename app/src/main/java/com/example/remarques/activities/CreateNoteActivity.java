@@ -100,10 +100,10 @@ public class CreateNoteActivity extends AppCompatActivity {
     private LinearLayout layoutWebURL, moreLayout, searchLayout, checkLinear;
     private ScrollView Parent;
     private TextView textWebURL;
-    private BottomSheetDialog bottomSheetDialog;
+    private BottomSheetDialog bottomSheetDialog, addingClip;
     private String selectedNoteColor;
     private ImageView imageNote, imageDown, imageUp, imageSpeak, imageSpeakOff, imageCopy, imagePaste, imageShare, imageColorLens, imageSearchClose,
-            imageSearch, cancelSearch, imageSearchPic,imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings;
+            imageSearch, cancelSearch, imageSearchPic, imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings, imageClip;
     private ImageView NumberText, BulletText, circleText, squareText, starText, alphabetText, alphabetSmallText, rightText, wrongText, moreIcons, checkBoxText;
     private String selectedImagePath, selectedImagePath2, toShare;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
@@ -131,6 +131,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Uri selectImageUri;
     File sdCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,6 +197,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         alphabetSmallText = findViewById(R.id.alphaSmallText);
         checkBoxText = findViewById(R.id.checkboxText);
         moreIcons = findViewById(R.id.more_icons);
+        imageClip = findViewById(R.id.imageClip);
         mDefaultColor = 0;
         sdCard = Environment.getExternalStorageDirectory();
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
@@ -209,7 +211,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         SharedPreferences getShared2 = getSharedPreferences("settings", MODE_PRIVATE);
         fontSettings = getShared2.getString("font number", null);
-
 
         typeface1 = Typeface.createFromAsset(getAssets(),
                 "font/regular.ttf");
@@ -416,7 +417,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ScannerView.class));
+                startActivity(new Intent(getApplicationContext(), ScannerView.class));
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -478,6 +479,12 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        imageClip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddingClip();
+            }
+        });
 /*        imageNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -887,7 +894,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
 
 
-
         if (getIntent().getBooleanExtra("isFromQuickActions", false)) {
             String type = getIntent().getStringExtra("quickActionType");
             if (type != null) {
@@ -968,6 +974,67 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     }
 
+    private void AddingClip() {
+        addingClip = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
+
+        sheetView = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.addingbottomlayout, (ViewGroup) findViewById(R.id.layoutAdding));
+
+
+        sheetView.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                addingClip.dismiss();
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager
+                        .PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CreateNoteActivity.this, new String[]
+                                    {Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_STORAGE_PERMISSION
+                    );
+                } else {
+                    selectImage();
+                }
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutAddImage2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingClip.dismiss();
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutAddUrl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingClip.dismiss();
+                showAddURLDialog();
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutAddTimeStamp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingClip.dismiss();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
+                String currentDateandTime = sdf.format(new Date());
+                String string = inputNoteText.getText().toString();
+                if (TextUtils.isEmpty(string)) {
+                    inputNoteText.setText(currentDateandTime);
+                } else {
+                    inputNoteText.setText(string + "\n\n" + currentDateandTime);
+                }
+                inputNoteText.setSelection(inputNoteText.getText().length());
+                inputNoteText.requestFocus();
+            }
+        });
+
+        addingClip.setContentView(sheetView);
+        addingClip.show();
+    }
+
     private void imageBottomUp() {
         bottomSheetDialog = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
 
@@ -1045,7 +1112,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 ImageOption.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
-            LinearLayout linearLayout, linearLayout1, linearLayout2,linearLayout3;
+            LinearLayout linearLayout, linearLayout1, linearLayout2, linearLayout3;
             linearLayout = view.findViewById(R.id.Expand);
             linearLayout1 = view.findViewById(R.id.Download);
             linearLayout2 = view.findViewById(R.id.Delete);
@@ -1080,7 +1147,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                     FileOutputStream outputStream = null;
                     File file = Environment.getExternalStorageDirectory();
-                    File dir = new File(file.getAbsolutePath() + File.separator+"Remarques" +File.separator+ "Gallery");
+                    File dir = new File(file.getAbsolutePath() + File.separator + "Remarques" + File.separator + "Gallery");
                     dir.mkdir();
                     String fileName = String.format(randCode + ".png", System.currentTimeMillis());
                     File outFile = new File(dir, fileName);
@@ -1144,7 +1211,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         FileOutputStream outputStream = null;
         File file = Environment.getExternalStorageDirectory();
-        File dir = new File(file.getAbsolutePath() + File.separator+"Remarques" +File.separator+ "Favorite Pictures");
+        File dir = new File(file.getAbsolutePath() + File.separator + "Remarques" + File.separator + "Favorite Pictures");
         dir.mkdir();
         String fileName = String.format(randCode + ".png", System.currentTimeMillis());
         File outFile = new File(dir, fileName);
@@ -1509,7 +1576,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         final ImageView imageColor1, imageColor2, imageColor3, imageColor4, imageColor5, imageColor6, imageColor7, imageColor8, imageColor9, imageColor10, imageColor11, imageColor12;
 
-        final LinearLayout linearLayout,linearLayout1,linearLayout2,linearLayout3,linearLayout4,linearLayout5;
+        final LinearLayout linearLayout, linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5;
         imageColor1 = sheetView.findViewById(R.id.imageColor1);
         imageColor2 = sheetView.findViewById(R.id.imageColor2);
         imageColor3 = sheetView.findViewById(R.id.imageColor3);
@@ -1524,12 +1591,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageColor12 = sheetView.findViewById(R.id.imageColor12);
 
         linearLayout = sheetView.findViewById(R.id.layoutPin);
-        linearLayout1 = sheetView.findViewById(R.id.layoutUnPin);
+//        linearLayout1 = sheetView.findViewById(R.id.layoutUnPin);
         linearLayout2 = sheetView.findViewById(R.id.layoutStar);
-        linearLayout3 = sheetView.findViewById(R.id.layoutUnStar);
+//        linearLayout3 = sheetView.findViewById(R.id.layoutUnStar);
         linearLayout4 = sheetView.findViewById(R.id.layoutArchive);
-        linearLayout5 = sheetView.findViewById(R.id.layoutUnArchive);
-
+//        linearLayout5 = sheetView.findViewById(R.id.layoutUnArchive);
 
         sheetView.findViewById(R.id.viewColor1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1810,7 +1876,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             }
         }
-        sheetView.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
+/*        sheetView.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -1842,7 +1908,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 bottomSheetDialog.dismiss();
                 showAddURLDialog();
             }
-        });
+        });*/
         if (!inputNoteText.getText().toString().isEmpty() && !inputNoteTitle.getText().toString().isEmpty()) {
             sheetView.findViewById(R.id.SavingLayout).setVisibility(View.VISIBLE);
             sheetView.findViewById(R.id.layoutSavePdf).setOnClickListener(new View.OnClickListener() {
@@ -1928,7 +1994,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void createQRCode() throws Exception {
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques"+File.separator+"QR Codes");
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "QR Codes");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
@@ -1970,7 +2036,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "TEXT copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "Text Files");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "Text Files");
             if (!docsFolder.exists()) {
                 docsFolder.mkdir();
             }
@@ -2342,7 +2408,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "PDF Files");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "PDF Files");
             if (!docsFolder.exists()) {
                 docsFolder.mkdir();
             }
@@ -2539,4 +2605,5 @@ public class CreateNoteActivity extends AppCompatActivity {
 //            document.close();
 //        }
 //    }
+
 

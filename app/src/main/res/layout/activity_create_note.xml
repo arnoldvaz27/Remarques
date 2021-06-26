@@ -50,7 +50,7 @@
             android:padding="@dimen/_4sdp"
             android:src="@drawable/down"
             app:layout_constraintBottom_toBottomOf="@id/imageBack"
-            app:layout_constraintEnd_toStartOf="@id/imageDefault"
+            app:layout_constraintEnd_toStartOf="@id/imageClip"
             app:layout_constraintTop_toTopOf="@id/imageBack"
             app:tint="@color/colorIcons" />
 
@@ -63,7 +63,7 @@
             android:src="@drawable/up"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/imageDownLayout"
-            app:layout_constraintEnd_toStartOf="@id/imageDefault"
+            app:layout_constraintEnd_toStartOf="@id/imageClip"
             app:layout_constraintTop_toTopOf="@id/imageDownLayout"
             app:tint="@color/colorIcons" />
 
@@ -77,6 +77,18 @@
             android:src="@drawable/reload"
             app:layout_constraintBottom_toBottomOf="@id/imageBack"
             app:layout_constraintEnd_toStartOf="@id/imageSearch"
+            app:layout_constraintTop_toTopOf="@id/imageBack"
+            app:tint="@color/colorIcons" />
+        <ImageView
+            android:id="@+id/imageClip"
+            android:layout_width="@dimen/_26sdp"
+            android:layout_height="@dimen/_26sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:contentDescription="None"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/clip"
+            app:layout_constraintBottom_toBottomOf="@id/imageBack"
+            app:layout_constraintEnd_toStartOf="@id/imageDefault"
             app:layout_constraintTop_toTopOf="@id/imageBack"
             app:tint="@color/colorIcons" />
 

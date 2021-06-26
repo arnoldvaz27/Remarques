@@ -144,7 +144,7 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:includeFontPadding="false"
-            android:text="Facebook Chat"
+            android:text="Facebook"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_13ssp" />
 
@@ -174,7 +174,7 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:includeFontPadding="false"
-            android:text="Instagram Chat"
+            android:text="Instagram"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_13ssp" />
 
