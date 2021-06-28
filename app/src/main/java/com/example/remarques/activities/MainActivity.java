@@ -51,7 +51,9 @@ import com.example.remarques.entities.Note;
 import com.example.remarques.listeners.NotesListeners;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
     TextView moreText,lessText;
     LinearLayout firstLayout,secondLayout;
     ImageView downImage,upImage;
+    public static String createNoteFolder;
 
     //finding data
 
@@ -259,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
                 startActivityForResult(
                         new Intent(MainActivity.this, CreateNoteActivity.class),
                         REQUEST_CODE_ADD_NOTE
@@ -1315,7 +1319,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                         keeper = matchesFound.get(0);
 
                         textView1.setText(keeper);
-//                        Toast.makeText(MainActivity.this, "Results = " + keeper, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FileDisplayed.this, "Results = " + keeper, Toast.LENGTH_SHORT).show();
                     }
                 }
 

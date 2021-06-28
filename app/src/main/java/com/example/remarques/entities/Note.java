@@ -43,6 +43,17 @@ public class Note implements Serializable {
     @ColumnInfo(name = "note_label")
     private String noteLabel;
 
+    @ColumnInfo(name = "folder")
+    private String folder;
+
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
     public String getNoteLabel() {
         return noteLabel;
     }

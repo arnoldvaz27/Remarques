@@ -10,6 +10,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -37,6 +39,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
@@ -60,9 +63,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.remarques.FileDisplayed;
+import com.example.remarques.FileAdapter;
 import com.example.remarques.R;
 import com.example.remarques.database.NotesDatabase;
 import com.example.remarques.entities.Note;
+import com.example.remarques.onFileSelectListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.itextpdf.text.BaseColor;
@@ -83,14 +89,17 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-@SuppressLint("SetTextI18n")
-public class CreateNoteActivity extends AppCompatActivity {
+import static com.example.remarques.activities.MainActivity.createNoteFolder;
+
+@SuppressLint({"SetTextI18n","RestrictedApi"})
+public class CreateNoteActivity extends AppCompatActivity implements onFileSelectListener {
 
     public static EditText inputNoteTitle, inputNoteSubTitle, inputNoteText, inputSearch;
     private TextView textDateTime, textDateTime2;
@@ -100,7 +109,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private LinearLayout layoutWebURL, moreLayout, searchLayout, checkLinear;
     private ScrollView Parent;
     private TextView textWebURL;
-    private BottomSheetDialog bottomSheetDialog, addingClip;
+    private BottomSheetDialog bottomSheetDialog, addingClip,addingFileType;
     private String selectedNoteColor;
     private ImageView imageNote, imageDown, imageUp, imageSpeak, imageSpeakOff, imageCopy, imagePaste, imageShare, imageColorLens, imageSearchClose,
             imageSearch, cancelSearch, imageSearchPic, imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings, imageClip;
@@ -120,7 +129,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     public static File pdfFiles;
 
     private Typeface typeface1, typeface2, typeface3, typeface4, typeface5, typeface6;
-    private Note alreadyAvailableNote;
+    private Note alreadyAvailableNote,note;
     private String FileName, fontSettings, richText;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
     private File pdfFile;
@@ -130,13 +139,35 @@ public class CreateNoteActivity extends AppCompatActivity {
     private InputStream inputStream;
     private Bitmap bitmap;
     private Uri selectImageUri;
+    public static String folderName;
     File sdCard;
+    public static String fileEnd = "";
+    private RecyclerView recyclerView;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
         First();
+        displayPdf();
+
+    }
+
+    private void createFolder() throws Exception{
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName);
+        docsFolder.mkdir();
+
+        pdfFile = new File(docsFolder.getAbsolutePath(), "ReadMe.pdf");
+        OutputStream outputStream = new FileOutputStream(pdfFile);
+        Document document = new Document();
+        PdfWriter.getInstance(document, outputStream);
+        document.open();
+
+        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+        document.add(new Paragraph("Don't Delete this folder", f));
+
+        document.close();
     }
 
     private void First() {
@@ -185,7 +216,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         MoreImage = findViewById(R.id.imageMoreImage);
         MoreUrl = findViewById(R.id.imageMoreWebURL);
 //        checkLinear = findViewById(R.id.linearLayout);
-
+        recyclerView = findViewById(R.id.recycler_view);
         NumberText = findViewById(R.id.numberedText);
         BulletText = findViewById(R.id.bulletText);
         circleText = findViewById(R.id.circleText);
@@ -310,6 +341,31 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             setViewOrUpdateNote();
+        }else{
+            i = 1;
+            folderName = createNoteFolder;
+            int hasWriteStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
+                        showMessage(new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+                            }
+                        });
+                        return;
+                    }
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+                }
+            } else {
+                try {
+                    createFolder();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         MoreUrl.setOnClickListener(new View.OnClickListener() {
@@ -533,7 +589,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             public void onClick(final View v) {
                 PopupMenu popup = new PopupMenu(getApplicationContext(), imageColorLens);
                 //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.notes_color, popup.getMenu());
 
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -915,7 +971,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(getApplicationContext(), imageSpeech);
                 //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu2, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.voice_note, popup.getMenu());
 
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -979,7 +1035,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         sheetView = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.addingbottomlayout, (ViewGroup) findViewById(R.id.layoutAdding));
 
-
         sheetView.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1031,8 +1086,189 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        sheetView.findViewById(R.id.layoutSelectFile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), sheetView.findViewById(R.id.layoutSelectFile));
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.storage_choosing, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.internal) {
+                            addingClip.dismiss();
+                            SelectingFileType();
+/*                            fileEnd = "pdf";
+                            Intent intent = new Intent(CreateNoteActivity.this,FileDisplayed.class);
+                            startActivity(intent);*/
+                        }
+                        if (item.getItemId() == R.id.external) {
+                            Toast.makeText(CreateNoteActivity.this, "Feature in progress", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+
+                popup.show();
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutSelectAudio).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), sheetView.findViewById(R.id.layoutSelectAudio));
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.storage_choosing, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.internal) {
+                            fileEnd = "amr";
+                            Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                            startActivity(intent);
+                        }
+                        if (item.getItemId() == R.id.bgColor) {
+                            Toast.makeText(CreateNoteActivity.this, "Feature in progress", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return true;
+                    }
+                });
+
+
+                popup.show();
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutSelectVideo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), sheetView.findViewById(R.id.layoutSelectVideo));
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.storage_choosing, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.internal) {
+                            fileEnd = "mp4";
+                            Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                            startActivity(intent);
+                        }
+                        if (item.getItemId() == R.id.bgColor) {
+                            Toast.makeText(CreateNoteActivity.this, "Feature in progress", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return true;
+                    }
+                });
+
+
+                popup.show();
+            }
+        });
+
+        sheetView.findViewById(R.id.layoutSelectMusic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), sheetView.findViewById(R.id.layoutSelectMusic));
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.storage_choosing, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.internal) {
+                            fileEnd = "mp3";
+                            Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                            startActivity(intent);
+                        }
+                        if (item.getItemId() == R.id.bgColor) {
+                            Toast.makeText(CreateNoteActivity.this, "Feature in progress", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return true;
+                    }
+                });
+
+
+                popup.show();
+            }
+        });
         addingClip.setContentView(sheetView);
         addingClip.show();
+    }
+
+    private void SelectingFileType() {
+        addingFileType = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
+
+        sheetView = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.filetypelayout, (ViewGroup) findViewById(R.id.layoutFileType));
+
+        sheetView.findViewById(R.id.layoutPdf).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "pdf";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        sheetView.findViewById(R.id.layoutWord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "docx";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        sheetView.findViewById(R.id.layoutExcel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "xlsx";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        sheetView.findViewById(R.id.layoutPowerpoint).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingFileType.dismiss();
+                AddingClip();
+            }
+        });
+        sheetView.findViewById(R.id.layoutText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "txt";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        sheetView.findViewById(R.id.layoutZip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "zip";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        sheetView.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "zip";
+                Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
+                startActivity(intent);
+                addingFileType.dismiss();
+            }
+        });
+        addingFileType.setContentView(sheetView);
+        addingFileType.show();
     }
 
     private void imageBottomUp() {
@@ -2166,12 +2402,13 @@ public class CreateNoteActivity extends AppCompatActivity {
         {
 
         }*/
-
+        i = 0;
         final Note note = new Note();
         note.setTitle(inputNoteTitle.getText().toString());
         note.setSubtitle(inputNoteSubTitle.getText().toString());
         note.setNoteText(inputNoteText.getText().toString());
         note.setDateTime(textDateTime.getText().toString());
+        note.setFolder(folderName);
         note.setBackgroundColor(String.valueOf(mDefaultColor));
         note.setColor(selectedNoteColor);
 
@@ -2301,6 +2538,34 @@ public class CreateNoteActivity extends AppCompatActivity {
             imageNote.setVisibility(View.VISIBLE);
             findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
             imageNote.setImageBitmap(photo);
+        } else  if (requestCode==12 && resultCode==RESULT_OK && data!=null && data.getData()!=null)
+        {
+
+            Uri uri = data.getData();
+            String uriString = uri.toString();
+            File myFile = new File(uriString);
+            String path = myFile.getAbsolutePath();
+            String displayName = null;
+
+            TextView textView;
+            textView = findViewById(R.id.text);
+            if (uriString.startsWith("content://")) {
+                Cursor cursor = null;
+                try {
+                    cursor = getApplicationContext().getContentResolver().query(uri, null, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        textView.setText(displayName);
+                    }
+                } finally {
+                    cursor.close();
+                }
+            } else if (uriString.startsWith("file://")) {
+                displayName = myFile.getName();
+                textView.setText(displayName);
+            }
+
+
         }
     }
 
@@ -2367,6 +2632,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         inputNoteSubTitle.setText(alreadyAvailableNote.getSubtitle());
         inputNoteText.setText(alreadyAvailableNote.getNoteText());
         textDateTime.setText(alreadyAvailableNote.getDateTime());
+        folderName = alreadyAvailableNote.getFolder();
 //        Parent.setBackgroundColor(Integer.parseInt(alreadyAvailableNote.getBackgroundColor()));
 
         if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
@@ -2379,6 +2645,12 @@ public class CreateNoteActivity extends AppCompatActivity {
             MoreImage.setVisibility(View.GONE);
             imageNote.setImageBitmap(null);
         }
+
+//        if (alreadyAvailableNote.getFolder() != null && !alreadyAvailableNote.getFolder().trim().isEmpty()) {
+//            recyclerView.setVisibility(View.VISIBLE);
+//        } else {
+//            recyclerView.setVisibility(View.GONE);
+//        }
 
         if (alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()) {
             textWebURL.setText(alreadyAvailableNote.getWebLink());
@@ -2450,7 +2722,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     public void buttonBold(View view) {
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
-        popup.getMenuInflater().inflate(R.menu.popup_menu3, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.text_alignment, popup.getMenu());
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menu_item) {
@@ -2481,8 +2753,68 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(CreateNoteActivity.this, MainActivity.class);
-        startActivity(i);
+        if(i == 1){
+            deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName));
+            Intent i = new Intent(CreateNoteActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+        else{
+            Intent i = new Intent(CreateNoteActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+    }
+
+    private void displayPdf() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CreateNoteActivity.this,RecyclerView.VERTICAL,false));
+        List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName)));
+        FileAdapter fileAdapter = new FileAdapter(this, pdfList, this);
+        recyclerView.setAdapter(fileAdapter);
+    }
+
+    public ArrayList<File> findPdf(File file) {
+        ArrayList<File> arrayList = new ArrayList<>();
+        File[] files = file.listFiles();
+
+        for (File singleFile : files) {
+            if (singleFile.isDirectory() || singleFile.isHidden()) {
+                arrayList.addAll(findPdf(singleFile));
+            } else {
+                if (singleFile.getName().contains(".")) {
+                    arrayList.add(singleFile);
+                }
+            }
+        }
+        return arrayList;
+    }
+
+    @Override
+    public void onFileSelected(File file) {
+        Uri uri = FileProvider.getUriForFile(this, CreateNoteActivity.this.getApplicationContext().getPackageName() + ".provider",file);
+        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+        if(file.getName().endsWith(".pdf") ){
+            pdfIntent.setDataAndType(uri, "application/pdf");
+        }
+        else if(file.getName().endsWith(".mp4") || file.getName().endsWith(".amr") || file.getName().endsWith(".mp3")){
+            pdfIntent.setDataAndType(uri, "audio/x-wav");
+        }
+        pdfIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(pdfIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(CreateNoteActivity.this, "No Applications found to open this format file. You can download relevant application to view this file format", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void deleteRecursive(File file) {
+        if (file.isDirectory())
+            for (File child : Objects.requireNonNull(file.listFiles()))
+            {
+                child.delete();
+                deleteRecursive(child);
+            }
+        file.delete();
     }
 
 }

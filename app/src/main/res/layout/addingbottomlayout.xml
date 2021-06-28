@@ -61,6 +61,7 @@
             android:id="@+id/layoutAddUrl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_weight="1">
 
             <ImageView
@@ -124,6 +125,7 @@
             android:id="@+id/layoutAddLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_weight="1">
 
             <ImageView
@@ -185,7 +187,8 @@
             android:id="@+id/layoutSelectFile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_9sdp">
 
             <ImageView
                 android:layout_width="@dimen/_21sdp"
@@ -246,7 +249,8 @@
             android:id="@+id/layoutSelectVideo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_9sdp">
 
             <ImageView
                 android:layout_width="@dimen/_21sdp"
@@ -287,8 +291,8 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="@dimen/_23sdp"
-                android:layout_height="@dimen/_23sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:src="@drawable/audio"
                 app:tint="#A3A91A" />
@@ -297,7 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_35sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:includeFontPadding="false"
                 android:text="Select Audio"
                 android:textColor="@color/colorWhite"
@@ -308,8 +312,8 @@
             android:id="@+id/layoutSelectMusic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_9sdp">
 
             <ImageView
                 android:layout_width="@dimen/_21sdp"
@@ -370,8 +374,8 @@
             android:id="@+id/layoutAddSketch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_13sdp">
 
             <ImageView
                 android:layout_width="@dimen/_21sdp"
