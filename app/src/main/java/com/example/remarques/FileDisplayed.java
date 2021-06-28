@@ -3,12 +3,17 @@ package com.example.remarques;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -19,26 +24,114 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static com.example.remarques.activities.CreateNoteActivity.fileEnd;
+import static com.example.remarques.activities.CreateNoteActivity.fileFormat;
 import static com.example.remarques.activities.CreateNoteActivity.folderName;
+import static com.example.remarques.activities.CreateNoteActivity.viewHolder;
 
 
 public class FileDisplayed extends AppCompatActivity implements onFileSelectListener {
 
+    public static String fileEnd = "";
+    private ImageView imageView;
+    private BottomSheetDialog addingFileType;
+    private View sheetView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filedisplayed);
 
         runtimePermission();
+        viewHolder = "FileDisplayed";
+
+        if(fileFormat.equals("File")){
+            imageView.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageView.setVisibility(View.INVISIBLE);
+        }
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fileFormat.equals("File")){
+                    SelectingFile();
+                }
+            }
+        });
+
+
+    }
+
+    private void SelectingFile() {
+        addingFileType = new BottomSheetDialog(FileDisplayed.this, R.style.BottomSheetTheme);
+
+        sheetView = LayoutInflater.from(FileDisplayed.this).inflate(R.layout.filetypelayout, (ViewGroup) findViewById(R.id.layoutFileType));
+
+        sheetView.findViewById(R.id.layoutPdf).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "pdf";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.layoutWord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "docx";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.layoutExcel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "xlsx";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.layoutPowerpoint).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "pptx";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.layoutText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "txt";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.layoutZip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileEnd = "zip";
+                addingFileType.dismiss();
+                displayFile();
+            }
+        });
+        sheetView.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingFileType.dismiss();
+            }
+        });
+        addingFileType.setContentView(sheetView);
+        addingFileType.show();
     }
 
     private void runtimePermission() {
         Dexter.withContext(FileDisplayed.this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                displayPdf();
+                displayFile();
             }
 
             @Override
@@ -71,8 +164,9 @@ public class FileDisplayed extends AppCompatActivity implements onFileSelectList
         return arrayList;
     }
 
-    private void displayPdf() {
+    private void displayFile() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        imageView = findViewById(R.id.menu_more);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(FileDisplayed.this,RecyclerView.VERTICAL,false));
         List<File> pdfList = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));

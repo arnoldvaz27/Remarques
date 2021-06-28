@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="File Name"
         android:layout_toEndOf="@id/img"
+        android:layout_toStartOf="@id/viewMore"
         android:layout_marginStart="10dp"
         android:layout_marginTop="@dimen/_5sdp"
         android:singleLine="true"
@@ -39,8 +40,16 @@
         android:textColor="@color/colorWhite"
         android:id="@+id/textFileName" />
 
-
-
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/viewMore"
+        android:src="@drawable/more_vert"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentEnd="true"
+        android:padding="5dp"
+        app:tint="@color/colorWhite" />
 
 </RelativeLayout>
 

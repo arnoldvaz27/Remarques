@@ -96,6 +96,7 @@ import java.util.Random;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
+import static com.example.remarques.FileDisplayed.fileEnd;
 import static com.example.remarques.activities.MainActivity.createNoteFolder;
 
 @SuppressLint({"SetTextI18n","RestrictedApi"})
@@ -139,9 +140,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     private InputStream inputStream;
     private Bitmap bitmap;
     private Uri selectImageUri;
-    public static String folderName;
+    public static String folderName,fileFormat;
     File sdCard;
-    public static String fileEnd = "";
+    public static String viewHolder;
     private RecyclerView recyclerView;
     private int i;
 
@@ -150,6 +151,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
         First();
+        viewHolder = "CreateNote";
         displayPdf();
 
     }
@@ -306,7 +308,6 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 inputNoteText.setTypeface(typeface6);
                 break;
         }
-
 
 //        inputNoteText.setGravity(Gravity.RIGHT);
         TTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -1098,7 +1099,10 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.internal) {
                             addingClip.dismiss();
-                            SelectingFileType();
+                            fileFormat = "File";
+                            fileEnd = "pdf";
+                            Intent intent = new Intent(CreateNoteActivity.this,FileDisplayed.class);
+                            startActivity(intent);
 /*                            fileEnd = "pdf";
                             Intent intent = new Intent(CreateNoteActivity.this,FileDisplayed.class);
                             startActivity(intent);*/
@@ -1125,6 +1129,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.internal) {
+                            fileFormat = "Audio";
                             fileEnd = "amr";
                             Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
                             startActivity(intent);
@@ -1153,6 +1158,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.internal) {
+                            fileFormat = "Video";
                             fileEnd = "mp4";
                             Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
                             startActivity(intent);
@@ -1181,6 +1187,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.internal) {
+                            fileFormat = "Music";
                             fileEnd = "mp3";
                             Intent intent = new Intent(CreateNoteActivity.this, FileDisplayed.class);
                             startActivity(intent);
@@ -1201,7 +1208,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         addingClip.show();
     }
 
-    private void SelectingFileType() {
+/*    private void SelectingFileType() {
         addingFileType = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
 
         sheetView = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.filetypelayout, (ViewGroup) findViewById(R.id.layoutFileType));
@@ -1269,7 +1276,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         });
         addingFileType.setContentView(sheetView);
         addingFileType.show();
-    }
+    }*/
 
     private void imageBottomUp() {
         bottomSheetDialog = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);

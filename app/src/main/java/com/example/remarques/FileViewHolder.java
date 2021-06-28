@@ -12,13 +12,14 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
 
     public TextView tvName;
     public RelativeLayout container;
-    public ImageView imageView;
+    public ImageView extensionImage,moreMenuImage;
 
     public FileViewHolder(@NonNull View itemView) {
         super(itemView);
 
         tvName = itemView.findViewById(R.id.textFileName);
         container = itemView.findViewById(R.id.container);
-        imageView = itemView.findViewById(R.id.img);
+        extensionImage = itemView.findViewById(R.id.img);
+        moreMenuImage = itemView.findViewById(R.id.viewMore);
     }
 }
