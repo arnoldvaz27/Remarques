@@ -152,7 +152,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -190,7 +190,7 @@
                 android:layout_height="@dimen/_21sdp"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:contentDescription="None"
-                android:src="@drawable/element_zip"/>
+                android:src="@drawable/element_zip" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -202,10 +202,16 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_12ssp" />
 
+
         </FrameLayout>
+
     </LinearLayout>
 
-    <LinearLayout
+</LinearLayout>
+
+
+    <!--
+             <LinearLayout
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -213,19 +219,17 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         android:orientation="horizontal"
-
         tools:ignore="UseCompoundDrawables">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:background="@drawable/background_search"
-            android:backgroundTint="@color/whatsApp"/>
+<Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:background="@drawable/background_search"
+                android:backgroundTint="@color/whatsApp"/>
 
 
 
     </LinearLayout>
-
-</LinearLayout>
+    -->
 

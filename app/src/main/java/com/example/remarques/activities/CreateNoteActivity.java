@@ -33,11 +33,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.speech.RecognizerIntent;
@@ -53,9 +55,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -84,6 +88,7 @@ import com.xeoh.android.texthighlighter.TextHighlighter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -110,7 +115,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     private LinearLayout layoutWebURL, moreLayout, searchLayout, checkLinear;
     private ScrollView Parent;
     private TextView textWebURL;
-    private BottomSheetDialog bottomSheetDialog, addingClip,addingFileType;
+    private BottomSheetDialog bottomSheetDialog, addingClip,addingFileType,addingRecorder;
     private String selectedNoteColor;
     private ImageView imageNote, imageDown, imageUp, imageSpeak, imageSpeakOff, imageCopy, imagePaste, imageShare, imageColorLens, imageSearchClose,
             imageSearch, cancelSearch, imageSearchPic, imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings, imageClip;
@@ -145,6 +150,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     public static String viewHolder;
     private RecyclerView recyclerView;
     private int i;
+    boolean isRecording;
+    String fileName;
+    MediaRecorder recorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1204,10 +1212,96 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.show();
             }
         });
+
+        sheetView.findViewById(R.id.layoutRecord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordingBottom();
+            }
+        });
         addingClip.setContentView(sheetView);
         addingClip.show();
     }
 
+    private void RecordingBottom() {
+        addingRecorder = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
+
+        sheetView = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.recordingbottom, (ViewGroup) findViewById(R.id.layoutRecording));
+
+        ImageButton btnRec;
+        TextView txtRecStatus;
+        Chronometer timeRec;
+
+
+
+        File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName);
+
+        btnRec = sheetView.findViewById(R.id.btnRec);
+        txtRecStatus = sheetView.findViewById(R.id.txtRecStatus);
+        timeRec = sheetView.findViewById(R.id.timeRec);
+
+        isRecording = false;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String date = format.format(new Date());
+
+        fileName = path + "/recording_" + date + ".amr";
+
+        btnRec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isRecording){
+                    try {
+                        startRecording();
+                        timeRec.setBase(SystemClock.elapsedRealtime());
+                        timeRec.start();
+                        txtRecStatus.setText("Recording...");
+                        btnRec.setImageResource(R.drawable.ic_stop);
+                        isRecording = true;
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        Toast.makeText(CreateNoteActivity.this, "Couldn't Record", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else{
+                    stopRecording();
+                    timeRec.setBase(SystemClock.elapsedRealtime());
+                    timeRec.stop();
+                    txtRecStatus.setText("");
+                    btnRec.setImageResource(R.drawable.ic_record);
+                    isRecording = false;
+                }
+            }
+        });
+        addingRecorder.setContentView(sheetView);
+        addingRecorder.show();
+
+
+    }
+
+    public void startRecording(){
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        recorder.setOutputFile(fileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        recorder.start();
+    }
+
+    public void stopRecording(){
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
 /*    private void SelectingFileType() {
         addingFileType = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
 
@@ -2221,6 +2315,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             sheetView.findViewById(R.id.layoutDeleteNote).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName));
                     showDeleteDialog();
                 }
             });

@@ -30,8 +30,10 @@
     <color name="colorNoteColor16">#8a3b0a</color>
     <color name="colorNoteColor17">#0b6e48</color>
     <color name="colorNoteColor18">#EE82EE</color>
+    <color name="cyan">#51e1ed</color>
 
     <color name="colorDelete">#FF4842</color>
+
     <color name="colorSearchBackground">#333333</color>
     <color name="facebook">#4267B2</color>
     <color name="whatsApp">#25D366</color>

@@ -1,9 +1,11 @@
 package com.example.remarques;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.remarques.activities.CreateNoteActivity;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.remarques.FileDisplayed.fileEnd;
@@ -83,9 +88,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
                     popupMenu.show();
 
                     popupMenu.setOnMenuItemClickListener(item -> {
-                        if (item.getItemId() == R.id.download) {
-
-                        }
                         if (item.getItemId() == R.id.open) {
                             Opening(fileList.get(position));
                         }
@@ -126,6 +128,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
             holder.extensionImage.setImageResource(R.drawable.element_txt);
         }else if(end.endsWith(".zip")){
             holder.extensionImage.setImageResource(R.drawable.element_zip);
+        }else if(end.endsWith(".amr")){
+            holder.extensionImage.setImageResource(R.drawable.amr);
         }
         holder.container.setOnClickListener(v -> {
             try {
