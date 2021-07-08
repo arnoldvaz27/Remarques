@@ -1539,11 +1539,12 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 ImageOption.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
-            LinearLayout linearLayout, linearLayout1, linearLayout2, linearLayout3;
+            LinearLayout linearLayout, linearLayout1, linearLayout2, linearLayout3,linearLayout4;
             linearLayout = view.findViewById(R.id.Expand);
             linearLayout1 = view.findViewById(R.id.Download);
             linearLayout2 = view.findViewById(R.id.Delete);
             linearLayout3 = view.findViewById(R.id.imageHistory);
+            linearLayout4 = view.findViewById(R.id.Share);
             ImageView imageView = view.findViewById(R.id.ImageSettingsCancel);
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1619,6 +1620,15 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 }
             });
 
+            linearLayout4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) imageNote.getDrawable();
+                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                    shareImageandText(bitmap);
+                }
+            });
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1628,6 +1638,43 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         }
         ImageOption.show();
     }
+
+    private void shareImageandText(Bitmap bitmap) {
+        Uri uri = getmageToShare(bitmap);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        // putting uri of image to be shared
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // adding text to share
+        intent.putExtra(Intent.EXTRA_TEXT, "Sharing Image");
+
+        // Add subject Here
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+
+        // setting type to image
+        intent.setType("image/png");
+
+        // calling startactivity() to share
+        startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+    private Uri getmageToShare(Bitmap bitmap) {
+        File imagefolder = new File(getCacheDir(), "images");
+        Uri uri = null;
+        try {
+            imagefolder.mkdirs();
+            File file = new File(imagefolder, "shared_image.png");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        return uri;
+    }
+
 
     private void saveInFavorite() {
         Random r = new Random(System.currentTimeMillis());
@@ -3009,6 +3056,11 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         file.delete();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayPdf();
+    }
 }
 /*
 

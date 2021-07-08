@@ -171,6 +171,15 @@ public class WordCounter extends AppCompatActivity {
                 }
             }
         });
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if(type.startsWith("text/")){
+                handleSendText(intent);
+            }
+        }
     }
 
     private void createQRCode() throws Exception{
@@ -207,4 +216,10 @@ public class WordCounter extends AppCompatActivity {
         super.onPause();
     }
 
-}
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+                enterText.setText(sharedText);
+            }
+        }
+    }

@@ -120,6 +120,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
         end = holder.tvName.getText().toString();
         if(end.endsWith(".mp4")){
             holder.extensionImage.setImageResource(R.drawable.mp4);
+        }else if(end.endsWith(".mp3")){
+            holder.extensionImage.setImageResource(R.drawable.mp3);
         }else if(end.endsWith(".pdf")){
             holder.extensionImage.setImageResource(R.drawable.element_pdf);
         }else if(end.endsWith(".docx")){

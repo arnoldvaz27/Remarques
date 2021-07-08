@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/chooseFile"
+        android:title="Choose File" />
 
     <item android:title="Sort By"
         android:id="@+id/sortBy"

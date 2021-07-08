@@ -313,6 +313,7 @@
         android:layout_marginStart="@dimen/_7sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_7sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:background="@color/colorNoteColor3" />
 
 
@@ -427,8 +428,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="horizontal"
         android:visibility="gone"
-        tools:ignore="UseCompoundDrawables"
-        android:layout_marginTop="@dimen/_3sdp">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="@dimen/_23sdp"
@@ -558,7 +558,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/_7sdp"
         android:layout_marginEnd="@dimen/_7sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="horizontal"
         android:visibility="gone"
         tools:ignore="UseCompoundDrawables">
@@ -592,11 +591,11 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/_7sdp"
         android:layout_marginEnd="@dimen/_7sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         android:visibility="gone"
-        tools:ignore="UseCompoundDrawables"
-        android:layout_marginTop="@dimen/_6sdp">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="@dimen/_23sdp"
