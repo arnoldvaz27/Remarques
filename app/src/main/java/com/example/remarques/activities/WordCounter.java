@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -188,9 +190,12 @@ public class WordCounter extends AppCompatActivity {
             docsFolder.mkdir();
         }
         String text = enterText.getText().toString();
-        Random r = new Random(System.currentTimeMillis());
+/*        Random r = new Random(System.currentTimeMillis());
         int randomCode = ((1 + r.nextInt(2)) * 1000 + r.nextInt(1000));
-        String randCode = Integer.toString(randomCode);
+        String randCode = Integer.toString(randomCode);*/
+        String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+        randCode = randCode.replaceAll(":","");
+        randCode = randCode.replaceAll(" ","");
         pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
         OutputStream outputStream = new FileOutputStream(pdfFile);
         Document document = new Document();

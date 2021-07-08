@@ -100,7 +100,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
+<!--    <LinearLayout
         android:id="@+id/Web"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/SavePDF"
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="4dp"
-        app:layout_constraintTop_toBottomOf="@id/Web"
+        app:layout_constraintTop_toBottomOf="@id/SearchDuckDuck"
         >
 
         <ImageView
