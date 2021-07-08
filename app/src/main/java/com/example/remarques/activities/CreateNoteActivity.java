@@ -91,6 +91,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,6 +156,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     boolean isRecording;
     String fileName;
     MediaRecorder recorder;
+    private ImageView fileMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +182,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         document.add(new Paragraph("Don't Delete this folder", f));
 
         document.close();
+
+
     }
 
     private void First() {
@@ -240,6 +246,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         moreIcons = findViewById(R.id.more_icons);
         imageClip = findViewById(R.id.imageClip);
         mDefaultColor = 0;
+        fileMenu = findViewById(R.id.fileMenuMore);
+
         sdCard = Environment.getExternalStorageDirectory();
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
         richText = getShared3.getString("rich text", null);
@@ -375,6 +383,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     e.printStackTrace();
                 }
             }
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName+File.separator+"ReadMe.pdf");
+            docsFolder.delete();
         }
 
         MoreUrl.setOnClickListener(new View.OnClickListener() {
@@ -746,6 +756,32 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             }
         });
 
+        fileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), fileMenu);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.createnotefileoption, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        return true;
+                    }
+                });
+
+                popup.show();
+            }
+        });
+
+        findViewById(R.id.refreshFile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayPdf();
+            }
+        });
+
         findViewById(R.id.NoteRight).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1037,7 +1073,51 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         });
         Linkify.addLinks(inputNoteText, Linkify.PHONE_NUMBERS | Linkify.WEB_URLS);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSendImage(intent); // Handle single image being sent
+            }
+            else if(type.startsWith("text/")){
+                handleSendText(intent);
+            }
+        }
     }
+
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            if(sharedText.startsWith("https://") || sharedText.startsWith("http://")){
+                layoutWebURL.setVisibility(View.VISIBLE);
+                MoreUrl.setVisibility(View.VISIBLE);
+                textWebURL.setText(sharedText);
+            }
+            else{
+                inputNoteText.setText(sharedText);
+            }
+        }
+    }
+
+
+    void handleSendImage(Intent intent) {
+        selectImageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (selectImageUri != null) {
+            try{
+                InputStream inputStream = getContentResolver().openInputStream(selectImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                imageNote.setImageBitmap(bitmap);
+                imageNote.setVisibility(View.VISIBLE);
+                findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
+                selectedImagePath = getPathFromUri(selectImageUri);
+            }catch (Exception e){
+                Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
 
     private void AddingClip() {
         addingClip = new BottomSheetDialog(CreateNoteActivity.this, R.style.BottomSheetTheme);
@@ -1149,8 +1229,6 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         return true;
                     }
                 });
-
-
                 popup.show();
             }
         });
@@ -1216,6 +1294,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         sheetView.findViewById(R.id.layoutRecord).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addingClip.dismiss();
                 RecordingBottom();
             }
         });
@@ -1231,14 +1310,15 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         ImageButton btnRec;
         TextView txtRecStatus;
         Chronometer timeRec;
-
-
+        ImageView cancel;
 
         File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques"+File.separator+ ".R "+folderName);
 
         btnRec = sheetView.findViewById(R.id.btnRec);
         txtRecStatus = sheetView.findViewById(R.id.txtRecStatus);
         timeRec = sheetView.findViewById(R.id.timeRec);
+        cancel = sheetView.findViewById(R.id.cancelRecorder);
+
 
         isRecording = false;
 
@@ -1275,6 +1355,15 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 }
             }
         });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addingRecorder.dismiss();
+                displayPdf();
+                AddingClip();
+            }
+        });
         addingRecorder.setContentView(sheetView);
         addingRecorder.show();
 
@@ -1298,6 +1387,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     }
 
     public void stopRecording(){
+        displayPdf();
         recorder.stop();
         recorder.release();
         recorder = null;

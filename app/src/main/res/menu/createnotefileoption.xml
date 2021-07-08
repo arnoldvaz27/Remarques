@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:title="Sort By"
+        android:id="@+id/sortBy"
+        app:showAsAction="never">
+
+        <menu>
+            <item android:title="Newest First"
+                android:id="@+id/newest"
+                app:showAsAction="never"/>
+            <item android:title="Oldest First"
+                android:id="@+id/oldest"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+
+    <item android:title="Layout Type"
+        android:id="@+id/layoutType"
+        app:showAsAction="never">
+
+        <menu>
+            <item android:title="Grid"
+                android:id="@+id/grid"
+                app:showAsAction="never"/>
+            <item android:title="Oldest First"
+                android:id="@+id/list"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+</menu>

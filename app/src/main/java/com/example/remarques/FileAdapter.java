@@ -1,6 +1,7 @@
 package com.example.remarques;
 
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -65,17 +66,24 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
 
                     popupMenu.setOnMenuItemClickListener(item -> {
                         if (item.getItemId() == R.id.download) {
+                          /*  File putPdfDrive = fileList.get(position);
 
+//                            Toast.makeText(context, (String.valueOf(Uri.parse(putPdfDrive.getUrl()))), Toast.LENGTH_SHORT).show();
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(putPdfDrive.getUrl()));
+                            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+                            request.setTitle(fileList.get(position).getName());
+                            request.setDescription("Downloading File..");
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+upload_name[position]+"."+upload_type[position]);
+                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                            manager.enqueue(request);*/
                         }
                         if (item.getItemId() == R.id.open) {
                             Opening(fileList.get(position));
                         }
                         if (item.getItemId() == R.id.share) {
-                            Uri uri = Uri.parse(fileList.get(position).getPath());
-                            Intent share = new Intent(Intent.ACTION_SEND);
-                            share.setType("application/pdf");
-                            share.putExtra(Intent.EXTRA_STREAM, uri);
-                            context.startActivity(Intent.createChooser(share, "Share Sound File"));
+                            Sharing(fileList.get(position));
                         }
                         if (item.getItemId() == R.id.info) {
                         }
@@ -92,11 +100,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
                             Opening(fileList.get(position));
                         }
                         if (item.getItemId() == R.id.share) {
-                            Uri uri = Uri.parse(fileList.get(position).getPath());
-                            Intent share = new Intent(Intent.ACTION_SEND);
-                            share.setType("application/pdf");
-                            share.putExtra(Intent.EXTRA_STREAM, uri);
-                            context.startActivity(Intent.createChooser(share, "Share Sound File"));
+                            Sharing(fileList.get(position));
                         }
                         if (item.getItemId() == R.id.info) {
 
@@ -140,12 +144,39 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
         });
     }
 
+    private void Sharing(File file) {
+        Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider",file);
+        Intent pdfIntent = new Intent(Intent.ACTION_SEND);
+        if(file.getName().endsWith(".pdf") ){
+            pdfIntent.setDataAndType(uri, "application/pdf");
+        }
+        else if(file.getName().endsWith(".mp4") || file.getName().endsWith(".amr") || file.getName().endsWith(".mp3")){
+            pdfIntent.setDataAndType(uri, "audio/x-wav");
+        }
+        pdfIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        pdfIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        try {
+            context.startActivity(Intent.createChooser(pdfIntent, "Share Sound File"));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No Applications found to open this format file. You can download relevant application to view this file format", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void Opening(File file) {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider",file);
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(uri, "application/pdf");
+        if(file.getName().endsWith(".pdf") ){
+            pdfIntent.setDataAndType(uri, "application/pdf");
+        }
+        else if(file.getName().endsWith(".mp4") || file.getName().endsWith(".amr") || file.getName().endsWith(".mp3")){
+            pdfIntent.setDataAndType(uri, "audio/x-wav");
+        }
         pdfIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(pdfIntent);
+        try {
+            context.startActivity(pdfIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No Applications found to open this format file. You can download relevant application to view this file format", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void adding(File file) {

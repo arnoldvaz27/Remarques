@@ -612,7 +612,7 @@
                     android:layout_marginTop="@dimen/_13sdp"
                     android:singleLine="true"
                     android:ellipsize="marquee"
-                    android:layout_weight="1.6"
+                    android:layout_weight="1.4"
                     android:textSize="@dimen/_14ssp"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
@@ -622,10 +622,21 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:id="@+id/menu_more"
+                    android:id="@+id/refreshFile"
+                    android:src="@drawable/reload"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginBottom="2dp"
+                    android:padding="5dp"
+                    app:tint="@color/colorIcons" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/fileMenuMore"
                     android:src="@drawable/more_vert"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.3"
                     android:layout_marginBottom="2dp"
                     android:padding="5dp"
                     app:tint="@color/colorWhite" />
