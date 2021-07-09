@@ -262,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
                 startActivityForResult(
                         new Intent(MainActivity.this, CreateNoteActivity.class),
                         REQUEST_CODE_ADD_NOTE

@@ -360,6 +360,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             setViewOrUpdateNote();
         } else {
             i = 1;
+            createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+            createNoteFolder = createNoteFolder.replaceAll(":","");
+            createNoteFolder = createNoteFolder.replaceAll(" ","");
             folderName = createNoteFolder;
             int hasWriteStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
@@ -383,7 +386,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     e.printStackTrace();
                 }
             }
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName + File.separator + "ReadMe.pdf");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R" + folderName + File.separator + "ReadMe.pdf");
             docsFolder.delete();
         }
 
@@ -2855,10 +2858,12 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             }
 //            inputSearch.append(result.toString().replaceAll("\\[", "").replaceAll("]", ""));
         } else if (requestCode == CAMERA_REQUEST && null != data) {
+            selectImageUri = data.getData();
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageNote.setVisibility(View.VISIBLE);
             findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
             imageNote.setImageBitmap(photo);
+            selectedImagePath = getPathFromUri(selectImageUri);
         } else if (requestCode == 12 && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
