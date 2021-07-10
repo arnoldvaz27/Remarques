@@ -187,7 +187,7 @@ public class FileDisplayed extends AppCompatActivity implements onFileSelectList
         OutputStream outputStream = new FileOutputStream(pdfFile);*/
         File SourceFile = new File(file.getAbsolutePath());
 
-        File DestinationFile = new File(Environment.getExternalStorageDirectory().toString()+File.separator + "Remarques"+File.separator+ ".R "+folderName+ File.separator + file.getName());
+        File DestinationFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName+ File.separator + file.getName());
 
         if(SourceFile.renameTo(DestinationFile))
         {

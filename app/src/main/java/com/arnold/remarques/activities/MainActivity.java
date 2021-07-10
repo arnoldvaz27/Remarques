@@ -18,6 +18,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -51,7 +53,10 @@ import com.arnold.remarques.entities.Note;
 import com.arnold.remarques.listeners.NotesListeners;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
     private NotesAdapter notesAdapter;
 
     private Typeface typeface1, typeface2, typeface3, typeface4, typeface5, typeface6;
-    private AlertDialog dialogAddURL;
+    private AlertDialog dialogAddURL,dialogAddText;
     private int noteClickedPosition = 0;
     private final int REQ_CODE = 100;
     private EditText inputSearch;
@@ -130,6 +135,132 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         findingBG = findViewById(R.id.findBG);
 
         First();
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSendImage(intent); // Handle single image being sent
+            } else if (type.startsWith("text/")) {
+                handleSendText(intent);
+            }
+        }
+    }
+
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            if (sharedText.startsWith("https://") || sharedText.startsWith("http://")) {
+                if (dialogAddURL == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    View view = LayoutInflater.from(this).inflate(
+                            R.layout.layout_add_url, (ViewGroup) findViewById(R.id.layoutAddUrlContainer)
+                    );
+                    builder.setView(view);
+
+                    dialogAddURL = builder.create();
+                    if (dialogAddURL.getWindow() != null) {
+                        dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+
+                    final EditText inputURL = view.findViewById(R.id.inputURL);
+
+                    inputURL.setText(sharedText);
+                    inputURL.setSelection(inputURL.getText().length());
+                    inputURL.requestFocus();
+                    view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (inputURL.getText().toString().trim().isEmpty()) {
+                                Toast.makeText(MainActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
+                            } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches()) {
+                                Toast.makeText(MainActivity.this, "Enter Valid URL", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                                intent.putExtra("isFromQuickActions", true);
+                                intent.putExtra("quickActionType", "URL");
+                                intent.putExtra("URL", inputURL.getText().toString());
+                                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+                                dialogAddURL.dismiss();
+                            }
+                        }
+                    });
+
+                    view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogAddURL.dismiss();
+                        }
+                    });
+                }
+
+                dialogAddURL.show();
+            } else {
+                if (dialogAddText == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    View view = LayoutInflater.from(this).inflate(
+                            R.layout.layoutaddtext, (ViewGroup) findViewById(R.id.layoutAddTextContainer)
+                    );
+                    builder.setView(view);
+
+                    dialogAddText = builder.create();
+                    if (dialogAddText.getWindow() != null) {
+                        dialogAddText.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+
+                    final EditText inputText = view.findViewById(R.id.inputText);
+
+                    inputText.setText(sharedText);
+                    inputText.setSelection(inputText.getText().length());
+                    inputText.requestFocus();
+                    view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (inputText.getText().toString().trim().isEmpty()) {
+                                Toast.makeText(MainActivity.this, "Enter Text", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                                intent.putExtra("isFromQuickActions", true);
+                                intent.putExtra("quickActionType", "Text");
+                                intent.putExtra("Text", inputText.getText().toString());
+                                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+                                dialogAddText.dismiss();
+                            }
+                        }
+                    });
+
+                    view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogAddText.dismiss();
+                        }
+                    });
+                }
+
+                dialogAddText.show();
+            }
+        }
+    }
+
+    void handleSendImage(Intent intent) {
+        Uri selectImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (selectImageUri != null) {
+            try {
+                String selectedImagePath = getPathFromUri(selectImageUri);
+                Intent intent2 = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                intent2.putExtra("isFromQuickActions", true);
+                intent2.putExtra("quickActionType", "image");
+                intent2.putExtra("imagePath", selectedImagePath);
+                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                startActivityForResult(intent2, REQUEST_CODE_ADD_NOTE);
+
+            } catch (Exception e) {
+                Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void First() {
@@ -260,6 +391,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
                 startActivityForResult(
                         new Intent(MainActivity.this, CreateNoteActivity.class),
                         REQUEST_CODE_ADD_NOTE
@@ -1506,6 +1638,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                         intent.putExtra("isFromQuickActions", true);
                         intent.putExtra("quickActionType", "image");
                         intent.putExtra("imagePath", selectedImagePath);
+                        createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
                         startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                     } catch (Exception exception) {
                         Toast.makeText(this, "Error occurred, Please try again", Toast.LENGTH_SHORT).show();
@@ -1555,6 +1688,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                         intent.putExtra("isFromQuickActions", true);
                         intent.putExtra("quickActionType", "URL");
                         intent.putExtra("URL", inputURL.getText().toString());
+                        createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
                         startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                         dialogAddURL.dismiss();
                     }
@@ -1570,7 +1704,6 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         }
 
         dialogAddURL.show();
-
     }
 
     private String getPathFromUri(Uri contentUri) {

@@ -165,19 +165,26 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     }
 
     private void createFolder() throws Exception {
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName);
-        docsFolder.mkdir();
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName);
+        boolean success = true;
+        if (!docsFolder.exists()) {
+            success = docsFolder.mkdirs();
+        }
+        if(success) {
+            pdfFile = new File(docsFolder.getAbsolutePath(), "ReadMe.pdf");
+            OutputStream outputStream = new FileOutputStream(pdfFile);
+            Document document = new Document();
+            PdfWriter.getInstance(document, outputStream);
+            document.open();
 
-        pdfFile = new File(docsFolder.getAbsolutePath(), "ReadMe.pdf");
-        OutputStream outputStream = new FileOutputStream(pdfFile);
-        Document document = new Document();
-        PdfWriter.getInstance(document, outputStream);
-        document.open();
+            Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+            document.add(new Paragraph("Don't Delete this folder", f));
 
-        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
-        document.add(new Paragraph("Don't Delete this folder", f));
-
-        document.close();
+            document.close();
+        }
+        else{
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -356,9 +363,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             setViewOrUpdateNote();
         } else {
             i = 1;
-            createNoteFolder = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-            createNoteFolder = createNoteFolder.replaceAll(":","");
-            createNoteFolder = createNoteFolder.replaceAll(" ","");
+            createNoteFolder = createNoteFolder.replaceAll(":", "");
+            createNoteFolder = createNoteFolder.replaceAll(" ", "");
             folderName = createNoteFolder;
             int hasWriteStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
@@ -382,7 +388,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     e.printStackTrace();
                 }
             }
-            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R" + folderName + File.separator + "ReadMe.pdf");
+            File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName + File.separator + "ReadMe.pdf");
             docsFolder.delete();
         }
 
@@ -993,18 +999,23 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             ChangingDBBackground();
         }
 
-
         if (getIntent().getBooleanExtra("isFromQuickActions", false)) {
             String type = getIntent().getStringExtra("quickActionType");
             if (type != null) {
-                if (type.equals("image")) {
-                    selectedImagePath = getIntent().getStringExtra("imagePath");
-                    imageNote.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
-                    imageNote.setVisibility(View.VISIBLE);
-                    findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
-                } else if (type.equals("URL")) {
-                    textWebURL.setText(getIntent().getStringExtra("URL"));
-                    layoutWebURL.setVisibility(View.VISIBLE);
+                switch (type) {
+                    case "image":
+                        selectedImagePath = getIntent().getStringExtra("imagePath");
+                        imageNote.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                        imageNote.setVisibility(View.VISIBLE);
+                        findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
+                        break;
+                    case "URL":
+                        textWebURL.setText(getIntent().getStringExtra("URL"));
+                        layoutWebURL.setVisibility(View.VISIBLE);
+                        break;
+                    case "Text":
+                        inputNoteText.setText(getIntent().getStringExtra("Text"));
+                        break;
                 }
             }
         }
@@ -1072,7 +1083,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         });
         Linkify.addLinks(inputNoteText, Linkify.PHONE_NUMBERS | Linkify.WEB_URLS);
 
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
         if (Intent.ACTION_SEND.equals(action) && type != null) {
@@ -1081,10 +1092,10 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             } else if (type.startsWith("text/")) {
                 handleSendText(intent);
             }
-        }
+        }*/
     }
 
-    private void handleSendText(Intent intent) {
+/*    private void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             if (sharedText.startsWith("https://") || sharedText.startsWith("http://")) {
@@ -1096,7 +1107,6 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             }
         }
     }
-
 
     void handleSendImage(Intent intent) {
         selectImageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -1112,7 +1122,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
 
     private void AddingClip() {
@@ -1308,7 +1318,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         Chronometer timeRec;
         ImageView cancel;
 
-        File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName);
+        File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName);
 
         btnRec = sheetView.findViewById(R.id.btnRec);
         txtRecStatus = sheetView.findViewById(R.id.txtRecStatus);
@@ -1569,28 +1579,36 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     FileOutputStream outputStream = null;
                     File file = Environment.getExternalStorageDirectory();
                     File dir = new File(file.getAbsolutePath() + File.separator + "Remarques" + File.separator + "Gallery");
-                    dir.mkdir();
-                    String fileName = String.format(randCode + ".png", System.currentTimeMillis());
-                    File outFile = new File(dir, fileName);
-                    try {
-                        outputStream = new FileOutputStream(outFile);
+                    boolean success = true;
+                    if (!dir.exists()) {
+                        success = dir.mkdirs();
+                    }
+                    if(success) {
+                        String fileName = String.format(randCode + ".png", System.currentTimeMillis());
+                        File outFile = new File(dir, fileName);
+                        try {
+                            outputStream = new FileOutputStream(outFile);
 
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        try {
+                            assert outputStream != null;
+                            outputStream.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(CreateNoteActivity.this, "Image saved in gallery", Toast.LENGTH_SHORT).show();
                     }
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                    try {
-                        assert outputStream != null;
-                        outputStream.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    else{
+                        Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
-                    try {
-                        outputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(CreateNoteActivity.this, "Image saved in gallery", Toast.LENGTH_SHORT).show();
                     ImageOption.cancel();
                 }
             });
@@ -1644,27 +1662,35 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         FileOutputStream outputStream = null;
         File file = Environment.getExternalStorageDirectory();
         File dir = new File(file.getAbsolutePath() + File.separator + "Remarques" + File.separator + "Favorite Pictures");
-        dir.mkdir();
-        String fileName = String.format(randCode + ".png", System.currentTimeMillis());
-        File outFile = new File(dir, fileName);
-        try {
-            outputStream = new FileOutputStream(outFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        boolean success = true;
+        if (!dir.exists()) {
+            success = dir.mkdirs();
         }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        try {
-            assert outputStream != null;
-            outputStream.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(success) {
+            String fileName = String.format(randCode + ".png", System.currentTimeMillis());
+            File outFile = new File(dir, fileName);
+            try {
+                outputStream = new FileOutputStream(outFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            try {
+                assert outputStream != null;
+                outputStream.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Toast.makeText(CreateNoteActivity.this, "Image saved in favorite", Toast.LENGTH_SHORT).show();
         }
-        try {
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        else{
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(CreateNoteActivity.this, "Image saved in favorite", Toast.LENGTH_SHORT).show();
     }
 
     private void UrlOptions() {
@@ -1755,21 +1781,27 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         } else {
                             Toast.makeText(getApplicationContext(), "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
                             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "PDF Files");
+                            boolean success = true;
                             if (!docsFolder.exists()) {
-                                docsFolder.mkdir();
+                                success = docsFolder.mkdirs();
                             }
-                            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-                            randCode = randCode.replaceAll(":", "");
-                            randCode = randCode.replaceAll(" ", "");
-                            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
-                            OutputStream outputStream = new FileOutputStream(pdfFile);
-                            Document document = new Document();
-                            PdfWriter.getInstance(document, outputStream);
-                            document.open();
+                            if(success) {
+                                String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                                randCode = randCode.replaceAll(":", "");
+                                randCode = randCode.replaceAll(" ", "");
+                                pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
+                                OutputStream outputStream = new FileOutputStream(pdfFile);
+                                Document document = new Document();
+                                PdfWriter.getInstance(document, outputStream);
+                                document.open();
 
-                            Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.BLUE);
-                            document.add(new Paragraph(textWebURL.getText().toString(), f));
-                            document.close();
+                                Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.BLUE);
+                                document.add(new Paragraph(textWebURL.getText().toString(), f));
+                                document.close();
+                            }
+                            else{
+                                Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1782,27 +1814,33 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 public void onClick(View v) {
                     try {
                         File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "QR Codes");
+                        boolean success = true;
                         if (!docsFolder.exists()) {
-                            docsFolder.mkdir();
+                            success = docsFolder.mkdirs();
                         }
-                        String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-                        randCode = randCode.replaceAll(":", "");
-                        randCode = randCode.replaceAll(" ", "");
-                        pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
-                        OutputStream outputStream = new FileOutputStream(pdfFile);
-                        Document document = new Document();
-                        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+                        if(success) {
+                            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                            randCode = randCode.replaceAll(":", "");
+                            randCode = randCode.replaceAll(" ", "");
+                            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
+                            OutputStream outputStream = new FileOutputStream(pdfFile);
+                            Document document = new Document();
+                            PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-                        document.open();
-                        PdfContentByte cb = writer.getDirectContent();
+                            document.open();
+                            PdfContentByte cb = writer.getDirectContent();
 
-                        BarcodeQRCode barcodeQRCode = new BarcodeQRCode(textWebURL.getText().toString(), 1000, 1000, null);
-                        Image codeQrImage = barcodeQRCode.getImage();
-                        codeQrImage.scaleAbsolute(350, 350);
-                        document.add(codeQrImage);
-                        document.newPage();
+                            BarcodeQRCode barcodeQRCode = new BarcodeQRCode(textWebURL.getText().toString(), 1000, 1000, null);
+                            Image codeQrImage = barcodeQRCode.getImage();
+                            codeQrImage.scaleAbsolute(350, 350);
+                            document.add(codeQrImage);
+                            document.newPage();
 
-                        document.close();
+                            document.close();
+                        }
+                        else{
+                            Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -2533,7 +2571,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             sheetView.findViewById(R.id.layoutDeleteNote).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName));
+                    deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName));
                     showDeleteDialog();
                 }
             });
@@ -2551,27 +2589,32 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
     private void createQRCode() throws Exception {
         File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "QR Codes");
+        boolean success = true;
         if (!docsFolder.exists()) {
-            docsFolder.mkdir();
+            success = docsFolder.mkdirs();
         }
-        String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-        randCode = randCode.replaceAll(":", "");
-        randCode = randCode.replaceAll(" ", "");
-        pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
-        OutputStream outputStream = new FileOutputStream(pdfFile);
-        Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+        if (success) {
+            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+            randCode = randCode.replaceAll(":", "");
+            randCode = randCode.replaceAll(" ", "");
+            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
+            OutputStream outputStream = new FileOutputStream(pdfFile);
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-        document.open();
-        PdfContentByte cb = writer.getDirectContent();
+            document.open();
+            PdfContentByte cb = writer.getDirectContent();
 
-        BarcodeQRCode barcodeQRCode = new BarcodeQRCode("Title: \n" + inputNoteTitle + "\nNote :\n\n" + inputNoteText, 1000, 1000, null);
-        Image codeQrImage = barcodeQRCode.getImage();
-        codeQrImage.scaleAbsolute(350, 350);
-        document.add(codeQrImage);
-        document.newPage();
+            BarcodeQRCode barcodeQRCode = new BarcodeQRCode("Title: \n" + inputNoteTitle + "\nNote :\n\n" + inputNoteText, 1000, 1000, null);
+            Image codeQrImage = barcodeQRCode.getImage();
+            codeQrImage.scaleAbsolute(350, 350);
+            document.add(codeQrImage);
+            document.newPage();
 
-        document.close();
+            document.close();
+        } else {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void createPDF2() throws Exception {
@@ -2593,31 +2636,36 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         } else {
             Toast.makeText(this, "TEXT copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "Text Files");
+            boolean success = true;
             if (!docsFolder.exists()) {
-                docsFolder.mkdir();
+                success = docsFolder.mkdirs();
             }
-            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-            randCode = randCode.replaceAll(":", "");
-            randCode = randCode.replaceAll(" ", "");
-            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".txt");
-            OutputStream outputStream = new FileOutputStream(pdfFile);
-            Document document = new Document();
-            PdfWriter.getInstance(document, outputStream);
-            document.open();
+            if (success) {
+                String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                randCode = randCode.replaceAll(":", "");
+                randCode = randCode.replaceAll(" ", "");
+                pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".txt");
+                OutputStream outputStream = new FileOutputStream(pdfFile);
+                Document document = new Document();
+                PdfWriter.getInstance(document, outputStream);
+                document.open();
 
-            Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
-            document.add(new Paragraph("Title", f));
+                Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+                document.add(new Paragraph("Title", f));
 
-            Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.NORMAL, BaseColor.BLACK);
-            document.add(new Paragraph("\n\n" + inputNoteTitle.getText().toString(), f1));
+                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.NORMAL, BaseColor.BLACK);
+                document.add(new Paragraph("\n\n" + inputNoteTitle.getText().toString(), f1));
 
-            Font f2 = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
-            document.add(new Paragraph("\n\n" + "Note", f2));
+                Font f2 = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+                document.add(new Paragraph("\n\n" + "Note", f2));
 
-            Font f3 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.BOLD, BaseColor.BLACK);
-            document.add(new Paragraph("\n\n" + inputNoteText.getText().toString(), f3));
+                Font f3 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.BOLD, BaseColor.BLACK);
+                document.add(new Paragraph("\n\n" + inputNoteText.getText().toString(), f3));
 
-            document.close();
+                document.close();
+            } else {
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -3002,32 +3050,38 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         } else {
             Toast.makeText(this, "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "PDF Files");
+            boolean success = true;
             if (!docsFolder.exists()) {
-                docsFolder.mkdir();
+                success = docsFolder.mkdirs();
             }
-            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-            randCode = randCode.replaceAll(":", "");
-            randCode = randCode.replaceAll(" ", "");
-            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
-            OutputStream outputStream = new FileOutputStream(pdfFile);
-            Document document = new Document();
-            PdfWriter.getInstance(document, outputStream);
-            document.open();
+            if(success) {
+                String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+                randCode = randCode.replaceAll(":", "");
+                randCode = randCode.replaceAll(" ", "");
+                pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
+                OutputStream outputStream = new FileOutputStream(pdfFile);
+                Document document = new Document();
+                PdfWriter.getInstance(document, outputStream);
+                document.open();
 
-            Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
-            document.add(new Paragraph("Title", f));
+                Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+                document.add(new Paragraph("Title", f));
 
-            Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.NORMAL, BaseColor.BLACK);
-            document.add(new Paragraph("\n\n" + inputNoteTitle.getText().toString(), f1));
+                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.NORMAL, BaseColor.BLACK);
+                document.add(new Paragraph("\n\n" + inputNoteTitle.getText().toString(), f1));
 
-            Font f2 = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
-            document.add(new Paragraph("\n\n" + "Note", f2));
+                Font f2 = new Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD, BaseColor.RED);
+                document.add(new Paragraph("\n\n" + "Note", f2));
 
-            Font f3 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.BOLD, BaseColor.BLACK);
-            document.add(new Paragraph("\n\n" + inputNoteText.getText().toString(), f3));
+                Font f3 = new Font(Font.FontFamily.TIMES_ROMAN, 15f, Font.BOLD, BaseColor.BLACK);
+                document.add(new Paragraph("\n\n" + inputNoteText.getText().toString(), f3));
 
 
-            document.close();
+                document.close();
+            }
+            else{
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -3075,7 +3129,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     @Override
     public void onBackPressed() {
         if (i == 1) {
-            deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName));
+            deleteRecursive(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName));
             Intent i = new Intent(CreateNoteActivity.this, MainActivity.class);
             startActivity(i);
         } else {
@@ -3088,7 +3142,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CreateNoteActivity.this, RecyclerView.VERTICAL, false));
-        List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".R " + folderName)));
+        List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName)));
         FileAdapter fileAdapter = new FileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
     }

@@ -181,32 +181,39 @@ public class WordCounter extends AppCompatActivity {
     }
 
     private void createQRCode() throws Exception{
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "/Counter Files");
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator+"Remarques" +File.separator+ "Counter Files");
+        boolean success = true;
         if (!docsFolder.exists()) {
-            docsFolder.mkdir();
+            success = docsFolder.mkdirs();
         }
-        String text = enterText.getText().toString();
+        if(success){
+            String text = enterText.getText().toString();
 /*        Random r = new Random(System.currentTimeMillis());
         int randomCode = ((1 + r.nextInt(2)) * 1000 + r.nextInt(1000));
         String randCode = Integer.toString(randomCode);*/
-        String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
-        randCode = randCode.replaceAll(":","");
-        randCode = randCode.replaceAll(" ","");
-        pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
-        OutputStream outputStream = new FileOutputStream(pdfFile);
-        Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+            String randCode = new SimpleDateFormat("dd MM yyyy HH:mm:ss a", Locale.getDefault()).format(new Date());
+            randCode = randCode.replaceAll(":","");
+            randCode = randCode.replaceAll(" ","");
+            pdfFile = new File(docsFolder.getAbsolutePath(), randCode + ".pdf");
+            OutputStream outputStream = new FileOutputStream(pdfFile);
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-        document.open();
-        PdfContentByte cb = writer.getDirectContent();
+            document.open();
+            PdfContentByte cb = writer.getDirectContent();
 
-        BarcodeQRCode barcodeQRCode = new BarcodeQRCode(text, 1000, 1000, null);
-        Image codeQrImage = barcodeQRCode.getImage();
-        codeQrImage.scaleAbsolute(350, 350);
-        document.add(codeQrImage);
-        document.newPage();
+            BarcodeQRCode barcodeQRCode = new BarcodeQRCode(text, 1000, 1000, null);
+            Image codeQrImage = barcodeQRCode.getImage();
+            codeQrImage.scaleAbsolute(350, 350);
+            document.add(codeQrImage);
+            document.newPage();
 
-        document.close();
+            document.close();
+        }
+        else{
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void onPause() {
