@@ -1,4 +1,4 @@
-package com.example.remarques;
+package com.arnold.remarques;
 
 import org.junit.Test;
 

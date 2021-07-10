@@ -1,4 +1,4 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,23 +19,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.remarques.R;
-import com.itextpdf.text.BadElementException;
+import com.arnold.remarques.R;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 @SuppressLint("SetTextI18n")
 public class WordCounter extends AppCompatActivity {

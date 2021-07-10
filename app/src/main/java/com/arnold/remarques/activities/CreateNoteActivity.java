@@ -1,4 +1,4 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,12 +67,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.remarques.FileDisplayed;
-import com.example.remarques.FileAdapter;
-import com.example.remarques.R;
-import com.example.remarques.database.NotesDatabase;
-import com.example.remarques.entities.Note;
-import com.example.remarques.onFileSelectListener;
+import com.arnold.remarques.FileDisplayed;
+import com.arnold.remarques.FileAdapter;
+import com.arnold.remarques.R;
+import com.arnold.remarques.database.NotesDatabase;
+import com.arnold.remarques.entities.Note;
+import com.arnold.remarques.onFileSelectListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.itextpdf.text.BaseColor;
@@ -91,21 +91,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
-import static com.example.remarques.FileDisplayed.fileEnd;
-import static com.example.remarques.activities.MainActivity.createNoteFolder;
+import static com.arnold.remarques.FileDisplayed.fileEnd;
+import static com.arnold.remarques.activities.MainActivity.createNoteFolder;
 
 @SuppressLint({"SetTextI18n", "RestrictedApi"})
 public class CreateNoteActivity extends AppCompatActivity implements onFileSelectListener {

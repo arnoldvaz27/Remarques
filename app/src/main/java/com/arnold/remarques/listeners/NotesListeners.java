@@ -1,6 +1,6 @@
-package com.example.remarques.listeners;
+package com.arnold.remarques.listeners;
 
-import com.example.remarques.entities.Note;
+import com.arnold.remarques.entities.Note;
 
 public interface NotesListeners {
 

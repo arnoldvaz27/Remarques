@@ -1,4 +1,4 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.example.remarques.R;
+import com.arnold.remarques.R;
 
 public class AppSettings extends AppCompatActivity {
 

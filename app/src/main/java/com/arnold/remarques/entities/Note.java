@@ -1,4 +1,4 @@
-package com.example.remarques.entities;
+package com.arnold.remarques.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

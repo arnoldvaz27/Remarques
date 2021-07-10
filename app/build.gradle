@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
     dataBinding.enabled = true
     defaultConfig {
-        applicationId "com.example.remarques"
+        applicationId "com.arnold.remarques"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.github.duanhong169:colorpicker:1.1.6' // color picker
 
     implementation 'com.xeoh.android:text-highlighter:1.0.3' // text highlighter
-    implementation 'com.karumi:dexter:6.2.2' //speech recognition
+    implementation 'com.karumi:dexter:6.2.2' //permission check
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 

@@ -1,4 +1,4 @@
-package com.example.remarques.dao;
+package com.arnold.remarques.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.remarques.entities.Note;
+import com.arnold.remarques.entities.Note;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.remarques;
+package com.arnold.remarques;
 
 import android.view.View;
 import android.widget.ImageView;

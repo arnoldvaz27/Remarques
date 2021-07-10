@@ -12,7 +12,7 @@
         android:id="@+id/ImageSettingsNote"
         android:layout_width="@dimen/_22sdp"
         android:layout_height="@dimen/_22sdp"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:contentDescription="None"
         android:src="@drawable/info"
         android:visibility="invisible"
@@ -39,7 +39,7 @@
         android:layout_width="@dimen/_22sdp"
         android:layout_height="@dimen/_22sdp"
         android:layout_marginEnd="@dimen/_13sdp"
-        android:layout_marginTop="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_18sdp"
         android:contentDescription="None"
         android:src="@drawable/cancel_settings"
         app:layout_constraintEnd_toEndOf="@id/settingsText"
@@ -231,7 +231,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/delete"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:contentDescription="None"
             app:tint="@color/colorDelete" />
 

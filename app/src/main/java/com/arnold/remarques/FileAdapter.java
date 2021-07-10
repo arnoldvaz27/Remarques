@@ -1,14 +1,11 @@
-package com.example.remarques;
+package com.arnold.remarques;
 
-import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -18,17 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.remarques.activities.CreateNoteActivity;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
-import static com.example.remarques.FileDisplayed.fileEnd;
-import static com.example.remarques.activities.CreateNoteActivity.folderName;
-import static com.example.remarques.activities.CreateNoteActivity.viewHolder;
+import static com.arnold.remarques.activities.CreateNoteActivity.folderName;
+import static com.arnold.remarques.activities.CreateNoteActivity.viewHolder;
 
 
 public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {

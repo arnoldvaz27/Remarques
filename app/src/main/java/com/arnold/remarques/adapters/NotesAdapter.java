@@ -1,4 +1,4 @@
-package com.example.remarques.adapters;
+package com.arnold.remarques.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,9 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.remarques.R;
-import com.example.remarques.entities.Note;
-import com.example.remarques.listeners.NotesListeners;
+import com.arnold.remarques.R;
+import com.arnold.remarques.entities.Note;
+import com.arnold.remarques.listeners.NotesListeners;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;

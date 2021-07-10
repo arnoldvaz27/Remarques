@@ -1,4 +1,4 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

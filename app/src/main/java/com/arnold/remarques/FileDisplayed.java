@@ -1,4 +1,4 @@
-package com.example.remarques;
+package com.arnold.remarques;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,11 +24,10 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.example.remarques.activities.CreateNoteActivity.fileFormat;
-import static com.example.remarques.activities.CreateNoteActivity.folderName;
-import static com.example.remarques.activities.CreateNoteActivity.viewHolder;
+import static com.arnold.remarques.activities.CreateNoteActivity.fileFormat;
+import static com.arnold.remarques.activities.CreateNoteActivity.folderName;
+import static com.arnold.remarques.activities.CreateNoteActivity.viewHolder;
 
 
 public class FileDisplayed extends AppCompatActivity implements onFileSelectListener {

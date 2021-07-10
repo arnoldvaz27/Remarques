@@ -1,4 +1,4 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,16 +44,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.remarques.R;
-import com.example.remarques.adapters.NotesAdapter;
-import com.example.remarques.database.NotesDatabase;
-import com.example.remarques.entities.Note;
-import com.example.remarques.listeners.NotesListeners;
+import com.arnold.remarques.R;
+import com.arnold.remarques.adapters.NotesAdapter;
+import com.arnold.remarques.database.NotesDatabase;
+import com.arnold.remarques.entities.Note;
+import com.arnold.remarques.listeners.NotesListeners;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

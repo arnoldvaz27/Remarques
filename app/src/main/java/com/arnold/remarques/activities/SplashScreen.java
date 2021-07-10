@@ -1,13 +1,14 @@
-package com.example.remarques.activities;
+package com.arnold.remarques.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.remarques.R;
+import com.arnold.remarques.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -15,7 +16,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -25,6 +25,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorNoteColor9));
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.colorNoteColor9));
         setContentView(R.layout.splash_screen);
 
         askPermission();

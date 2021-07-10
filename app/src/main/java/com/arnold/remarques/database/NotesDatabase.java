@@ -1,11 +1,11 @@
-package com.example.remarques.database;
+package com.arnold.remarques.database;
 
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import com.example.remarques.dao.NoteDao;
-import com.example.remarques.entities.Note;
+import com.arnold.remarques.dao.NoteDao;
+import com.arnold.remarques.entities.Note;
 
 @Database(entities = Note.class, version = 1,exportSchema = false)
 public abstract class NotesDatabase extends RoomDatabase {
