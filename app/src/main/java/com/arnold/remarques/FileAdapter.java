@@ -1,5 +1,6 @@
 package com.arnold.remarques;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FileViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvName.setText(fileList.get(position).getName());
         holder.tvName.setSelected(true);
 

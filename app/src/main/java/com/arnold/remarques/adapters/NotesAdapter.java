@@ -1,5 +1,6 @@
 package com.arnold.remarques.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -51,7 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.setNote(notes.get(position));
         holder.layoutNote.setOnClickListener(new View.OnClickListener() {
             @Override
