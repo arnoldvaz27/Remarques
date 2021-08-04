@@ -46,6 +46,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arnold.remarques.DeviceFiles.DeviceFilesDisplay;
 import com.arnold.remarques.R;
 import com.arnold.remarques.adapters.NotesAdapter;
 import com.arnold.remarques.database.NotesDatabase;
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorDelete));
         setContentView(R.layout.main);
 
 /*        SharedPreferences getShared6 = getSharedPreferences("settings", MODE_PRIVATE);
@@ -135,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         findingBG = findViewById(R.id.findBG);
 
         First();
+
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -398,7 +401,6 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                 );
             }
         });
-
 /*        notesRecyclerView = findViewById(R.id.notesRecyclerView);
         notesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));*/
         notesRecyclerView = findViewById(R.id.notesRecyclerView);
@@ -1538,6 +1540,13 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                 bottomSheetDialog.dismiss();
             }
         });
+        sheetView.findViewById(R.id.imageFolder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),DeviceFilesDisplay.class));
+                bottomSheetDialog.dismiss();
+            }
+        });
         sheetView.findViewById(R.id.imageStarNotes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1734,4 +1743,5 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         super.onBackPressed();
         finishAffinity();
     }
+
 }

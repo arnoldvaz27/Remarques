@@ -21,53 +21,60 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.arnold.remarques.activities.WordCounter"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:label="Word Counter"
+            android:name=".DeviceFiles.DeviceFilesDisplay"
+            android:exported="true" />
+        <activity
+            android:name=".activities.WordCounter"
             android:icon="@drawable/word_counter"
-            >
+            android:label="Word Counter"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arnold.remarques.activities.ScannerView"
+            android:name=".activities.ScannerView"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.arnold.remarques.activities.AppSettings"
+            android:name=".activities.AppSettings"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.arnold.remarques.FileDisplayed"
+            android:name=".FileDisplayed"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.arnold.remarques.activities.CreateNoteActivity"
+            android:name=".activities.CreateNoteActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity">
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity
-            android:name="com.arnold.remarques.activities.MainActivity"
+            android:name=".activities.MainActivity"
+            android:label="Create Note"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:label="Create Note" >
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name="com.arnold.remarques.activities.SplashScreen">
+        <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

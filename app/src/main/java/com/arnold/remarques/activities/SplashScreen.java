@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import java.util.List;
 public class SplashScreen extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_TIME_OUT=2000;
+    private String lock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,25 @@ public class SplashScreen extends AppCompatActivity {
 
         askPermission();
 
+
+    }
+
+    private void checkLock() {
+        SharedPreferences LayoutFull = getSharedPreferences("Lock", MODE_PRIVATE);
+        lock = LayoutFull.getString("appLocking", null);
+
+        final SharedPreferences LayoutFull1 = getSharedPreferences("layoutFull", MODE_PRIVATE);
+        final SharedPreferences.Editor LayoutFull2 = LayoutFull1.edit();
+        if (lock == null) {
+            LayoutFull2.putString("appLocking", "No");
+        }
+        LayoutFull2.apply();
+
+        if(lock.equals("Yes")){
+
+        }else{
+
+        }
     }
 
     private void askPermission() {

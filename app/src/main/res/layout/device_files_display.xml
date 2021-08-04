@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DeviceFiles.DeviceFilesDisplay"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/textMyNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/colorDelete"
+        android:padding="@dimen/_8sdp"
+        android:weightSum="2.0">
+
+        <TextView
+            android:id="@+id/MyNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="Remarques Folder"
+            android:layout_weight="2.0"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/regular"
+            android:textSize="@dimen/_20ssp" />
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:id="@+id/menu_more"
+            android:src="@drawable/more_vert"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:padding="5dp"
+            app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:padding="@dimen/_2sdp"
+        android:id="@+id/recycler_view"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/empty"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_150sdp"
+        android:visibility="gone"
+        android:src="@drawable/documentempty"
+        />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Sorry, there are no files"
+        android:textColor="@color/colorNoteColor5"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        />
+
+</LinearLayout>

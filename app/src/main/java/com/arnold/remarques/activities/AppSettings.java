@@ -3,18 +3,30 @@ package com.arnold.remarques.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arnold.remarques.R;
+import com.arnold.remarques.database.NotesDatabase;
 
 public class AppSettings extends AppCompatActivity {
 
     private CheckBox font1,font2,font3,font4,font5,font6,richTextBox,detailLayout,normalLayout;
     private String fontSettings,richText,layoutType;
-
+    private LinearLayout reset;
+    private AlertDialog dialogDeleteNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +41,7 @@ public class AppSettings extends AppCompatActivity {
         detailLayout = findViewById(R.id.detailLayout);
         normalLayout = findViewById(R.id.normalLayout);
         richTextBox = findViewById(R.id.richText);
+        reset = findViewById(R.id.reset);
 
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
         richText = getShared3.getString("rich text", null);
@@ -39,6 +52,53 @@ public class AppSettings extends AppCompatActivity {
         SharedPreferences getShared6 = getSharedPreferences("settings", MODE_PRIVATE);
         layoutType = getShared6.getString("layout type", null);
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialogDeleteNote == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AppSettings.this);
+                    View view = LayoutInflater.from(AppSettings.this).inflate(
+                            R.layout.delete_app_date, (ViewGroup) findViewById(R.id.layoutDeleteNoteContainer)
+                    );
+                    builder.setView(view);
+                    dialogDeleteNote = builder.create();
+                    if (dialogDeleteNote.getWindow() != null) {
+                        dialogDeleteNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            @SuppressLint("StaticFieldLeak")
+                            class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
+
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().deleteAll();
+                                    return null;
+
+                                }
+
+                                @Override
+                                protected void onPostExecute(Void aVoid) {
+                                    super.onPostExecute(aVoid);
+                                    dialogDeleteNote.cancel();
+                                    showToast("Data Deleted");
+                                }
+                            }
+                            new DeleteNoteTask().execute();
+                        }
+                    });
+
+                    view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogDeleteNote.dismiss();
+                        }
+                    });
+                }
+                dialogDeleteNote.show();
+            }
+        });
         checkRichText();
 
         checkFont();
@@ -260,5 +320,26 @@ public class AppSettings extends AppCompatActivity {
                 font5.setChecked(false);
                 break;
         }
+    }
+
+    void showToast(String message) {
+        Toast toast = new Toast(AppSettings.this);
+
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(AppSettings.this)
+                .inflate(R.layout.toast_layout, null);
+
+        TextView tvMessage = view.findViewById(R.id.Message); //text view from the custom toast layout
+        tvMessage.setText(message);
+
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        finish();
     }
 }

@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/file.xml" value="0.21296296296296297" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/activity_create_note.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/app_lock.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/app_settings.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/delete_app_date.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/device_files_display.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/element_holder.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/filedisplayed.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/imagemenu.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_delete_note.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_miscellaneous.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_more_options.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/toast_layout.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/devicefiles.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/displayfile.xml" value="0.15555555555555556" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/notedisplayedmenu.xml" value="0.20520833333333333" />
+      </map>
+    </option>
+  </component>
   <component name="EntryPointsManager">
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="android.annotation.SuppressLint" />

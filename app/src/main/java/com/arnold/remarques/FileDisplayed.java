@@ -59,8 +59,6 @@ public class FileDisplayed extends AppCompatActivity implements onFileSelectList
                 }
             }
         });
-
-
     }
 
     private void SelectingFile() {
