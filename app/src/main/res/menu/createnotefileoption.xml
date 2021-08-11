@@ -8,49 +8,54 @@
         app:showAsAction="never">
 
         <menu>
-            <item android:title="Files"
+            <item
+                android:title="Files"
                 android:id="@+id/file"
-                app:showAsAction="never"/>
-            <item android:title="Videos"
+                app:showAsAction="never" />
+            <item
+                android:title="Videos"
                 android:id="@+id/video"
-                app:showAsAction="never"/>
-            <item android:title="Audios"
+                app:showAsAction="never" />
+            <item
+                android:title="Audios"
                 android:id="@+id/audio"
-                app:showAsAction="never"/>
-            <item android:title="Music"
+                app:showAsAction="never" />
+            <item
+                android:title="Music"
                 android:id="@+id/music"
-                app:showAsAction="never"/>
-            <item android:title="Pictures"
+                app:showAsAction="never" />
+            <item
+                android:title="Pictures"
                 android:id="@+id/pictures"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
         </menu>
     </item>
 
-    <item android:title="Sort By"
-        android:id="@+id/sortBy"
-        app:showAsAction="never">
+    <!--    <item android:title="Sort By"
+            android:id="@+id/sortBy"
+            app:showAsAction="never">
 
-        <menu>
-            <item android:title="Newest First"
-                android:id="@+id/newest"
-                app:showAsAction="never"/>
-            <item android:title="Oldest First"
-                android:id="@+id/oldest"
-                app:showAsAction="never"/>
-        </menu>
-    </item>
+            <menu>
+                <item android:title="Newest First"
+                    android:id="@+id/newest"
+                    app:showAsAction="never"/>
+                <item android:title="Oldest First"
+                    android:id="@+id/oldest"
+                    app:showAsAction="never"/>
+            </menu>
+        </item>-->
 
- <!--   <item android:title="Layout Type"
-        android:id="@+id/layoutType"
-        app:showAsAction="never">
+    <!--   <item android:title="Layout Type"
+           android:id="@+id/layoutType"
+           app:showAsAction="never">
 
-        <menu>
-            <item android:title="Grid"
-                android:id="@+id/grid"
-                app:showAsAction="never"/>
-            <item android:title="Oldest First"
-                android:id="@+id/list"
-                app:showAsAction="never"/>
-        </menu>
-    </item>-->
+           <menu>
+               <item android:title="Grid"
+                   android:id="@+id/grid"
+                   app:showAsAction="never"/>
+               <item android:title="Oldest First"
+                   android:id="@+id/list"
+                   app:showAsAction="never"/>
+           </menu>
+       </item>-->
 </menu>

@@ -121,7 +121,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     private ImageView imageNote, imageDown, imageUp, imageSpeak, imageLock, imageUnLock, imageCopy, imagePaste, imageShare, imageColorLens, imageSearchClose,
             imageSearch, cancelSearch, imageSearchPic, imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings, imageClip;
     private ImageView NumberText, BulletText, circleText, squareText, starText, alphabetText, alphabetSmallText, rightText, wrongText, moreIcons, checkBoxText;
-    private String selectedImagePath, selectedImagePath2, toShare;
+    private String selectedImagePath, selectedImagePath2, toShare,custom;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int CAMERA_REQUEST = 1888;
@@ -186,7 +186,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
             document.close();
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            showToastRed("Error");
         }
     }
 
@@ -822,7 +822,26 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-
+                        if (item.getItemId() == R.id.file) {
+                            custom = "file";
+                            displayCustomPdf();
+                        }
+                        if (item.getItemId() == R.id.video) {
+                            custom = "video";
+                            displayCustomPdf();
+                        }
+                        if (item.getItemId() == R.id.audio) {
+                            custom = "audio";
+                            displayCustomPdf();
+                        }
+                        if (item.getItemId() == R.id.music) {
+                            custom = "music";
+                            displayCustomPdf();
+                        }
+                        if (item.getItemId() == R.id.pictures) {
+                            custom = "pictures";
+                            displayCustomPdf();
+                        }
                         return true;
                     }
                 });
@@ -1106,9 +1125,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                             try {
                                 startActivityForResult(intent, REQ_CODE_TITLE);
                             } catch (ActivityNotFoundException a) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sorry your device not supported",
-                                        Toast.LENGTH_SHORT).show();
+                                showToastRed("Sorry your device not supported");
                             }
                         }
                         if (item.getItemId() == R.id.sub) {
@@ -1120,9 +1137,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                             try {
                                 startActivityForResult(intent, REQ_CODE_SUB_TITLE);
                             } catch (ActivityNotFoundException a) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sorry your device not supported",
-                                        Toast.LENGTH_SHORT).show();
+                                showToastRed("Sorry your device not supported");
                             }
                         }
                         if (item.getItemId() == R.id.note) {
@@ -1134,9 +1149,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                             try {
                                 startActivityForResult(intent, REQ_CODE_NOTE);
                             } catch (ActivityNotFoundException a) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sorry your device not supported",
-                                        Toast.LENGTH_SHORT).show();
+                                showToastRed("Sorry your device not supported");
                             }
                         }
 
@@ -1427,7 +1440,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         isRecording = true;
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(CreateNoteActivity.this, "Couldn't Record", Toast.LENGTH_SHORT).show();
+                        showToastRed("Couldn't Record");
                     }
 
                 } else {
@@ -1567,7 +1580,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 imageView.setImageBitmap(bitmap);
                 selectedImagePath2 = getPathFromUri(selectImageUri);
             } catch (Exception exception) {
-                Toast.makeText(this, "Error occurred, Please try again", Toast.LENGTH_SHORT).show();
+                showToastRed("Error occurred, Please try again");
             }
             selectedImagePath2 = alreadyAvailableNote.getImagePath();
             imageView2.setVisibility(View.VISIBLE);
@@ -1602,12 +1615,10 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     imageView.setImageBitmap(bitmap);
                     selectedImagePath2 = getPathFromUri(selectImageUri);
                 } catch (Exception exception) {
-                    Toast.makeText(this, "Error occurred, Please try again", Toast.LENGTH_SHORT).show();
+                    showToastRed("Error occurred, Please try again");
                 }
             }
         }
-
-
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
     }
@@ -1685,9 +1696,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(CreateNoteActivity.this, "Image saved in gallery", Toast.LENGTH_SHORT).show();
+                        showToast("Image saved in gallery");
                     } else {
-                        Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        showToastRed("Error");
                     }
                     ImageOption.cancel();
                 }
@@ -1728,7 +1739,6 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         ImageOption.show();
     }
 
-
     private void saveInFavorite() {
         /*Random r = new Random(System.currentTimeMillis());
         int randomCode = ((1 + r.nextInt(2)) * 10000000 + r.nextInt(10000000));
@@ -1766,9 +1776,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Toast.makeText(CreateNoteActivity.this, "Image saved in favorite", Toast.LENGTH_SHORT).show();
+            showToastRed("Image saved in favorite");
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            showToast("Error");
         }
     }
 
@@ -1809,13 +1819,12 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("Google Chrome Url", toCopy);
                         clipboard.setPrimaryClip(clip);
-                        Toast.makeText(CreateNoteActivity.this, "Paste the URL in the search box", Toast.LENGTH_LONG).show();
+                        showToast("Paste the URL in the search box");
                         PackageManager pm = getPackageManager();
                         Intent intent2 = pm.getLaunchIntentForPackage("com.android.chrome");
                         startActivity(intent2);
                     } catch (Exception e) {
-                        Toast.makeText(CreateNoteActivity.this, "Google Chrome does not exists", Toast.LENGTH_SHORT).show();
-
+                        showToastRed("Google Chrome does not exists");
                     }
                 }
             });
@@ -1828,12 +1837,12 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("Duck Duck Go Url", toCopy);
                         clipboard.setPrimaryClip(clip);
-                        Toast.makeText(CreateNoteActivity.this, "Paste the URL in the search box", Toast.LENGTH_LONG).show();
+                        showToast("Paste the URL in the search box");
                         PackageManager pm = getPackageManager();
                         Intent intent2 = pm.getLaunchIntentForPackage("com.duckduckgo.mobile.android");
                         startActivity(intent2);
                     } catch (Exception e) {
-                        Toast.makeText(CreateNoteActivity.this, "Duck Duck Go does not exists", Toast.LENGTH_SHORT).show();
+                        showToastRed("Duck Duck Go does not exists");
                     }
                 }
             });
@@ -1858,7 +1867,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
+                            showToast("PDF copy has been saved to this device successfully");
                             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "PDF Files");
                             boolean success = true;
                             if (!docsFolder.exists()) {
@@ -1878,7 +1887,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                                 document.add(new Paragraph(textWebURL.getText().toString(), f));
                                 document.close();
                             } else {
-                                Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                showToastRed("Error");
                             }
                         }
                     } catch (Exception e) {
@@ -1916,7 +1925,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
                             document.close();
                         } else {
-                            Toast.makeText(CreateNoteActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            showToastRed("Error");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1942,8 +1951,6 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     UrlOption.cancel();
                 }
             });
-
-
         }
         UrlOption.show();
     }
@@ -1996,6 +2003,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     First();
                 }
             });
+
             textBox1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2254,8 +2262,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(Intent.createChooser(waIntent, "Share with"));
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(CreateNoteActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
-                            .show();
+                    showToastRed("WhatsApp not Installed");
                 }
                 bottomSheetDialog.dismiss();
             }
@@ -2715,7 +2722,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
             document.close();
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            showToastRed("Error");
         }
     }
 
@@ -2736,7 +2743,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
             }
         } else {
-            Toast.makeText(this, "TEXT copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
+            showToast("TEXT copy has been saved to this device successfully");
             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "Text Files");
             boolean success = true;
             if (!docsFolder.exists()) {
@@ -2766,7 +2773,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
                 document.close();
             } else {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                showToastRed("Error");
             }
         }
     }
@@ -2940,7 +2947,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectImage();
             } else {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                showToastRed("Permission Denied");
             }
         }
         if (requestCode == REQUEST_CODE_ASK_PERMISSIONS) {
@@ -2951,7 +2958,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this, "Write_External Permission Denied", Toast.LENGTH_SHORT).show();
+                showToastRed("Write_External Permission Denied");
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -2973,7 +2980,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                         findViewById(R.id.imageMoreImage).setVisibility(View.VISIBLE);
                         selectedImagePath = getPathFromUri(selectImageUri);
                     } catch (Exception exception) {
-                        Toast.makeText(this, "Error occurred, Please try again", Toast.LENGTH_SHORT).show();
+                        showToastRed("Error occurred, Please try again");
                     }
                 }
             }
@@ -3080,9 +3087,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 @Override
                 public void onClick(View v) {
                     if (inputURL.getText().toString().trim().isEmpty()) {
-                        Toast.makeText(CreateNoteActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
+                        showToastRed("Enter URL");
                     } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches()) {
-                        Toast.makeText(CreateNoteActivity.this, "Enter Valid URL", Toast.LENGTH_SHORT).show();
+                        showToastRed("Enter Valid URL");
                     } else {
                         layoutWebURL.setVisibility(View.VISIBLE);
                         MoreUrl.setVisibility(View.VISIBLE);
@@ -3164,7 +3171,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                             }
                             dialogResetNote.dismiss();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Please enter correct password", Toast.LENGTH_SHORT).show();
+                            showToastRed("Please enter correct password");
                         }
                     }
                 });
@@ -3246,7 +3253,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
             }
         } else {
-            Toast.makeText(this, "PDF copy has been saved to this device successfully", Toast.LENGTH_LONG).show();
+            showToast("PDF copy has been saved to this device successfully");
             File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "PDF Files");
             boolean success = true;
             if (!docsFolder.exists()) {
@@ -3277,7 +3284,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
                 document.close();
             } else {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                showToastRed("Error");
             }
         }
     }
@@ -3364,6 +3371,70 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         return arrayList;
     }
 
+    private void displayCustomPdf() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CreateNoteActivity.this, RecyclerView.VERTICAL, false));
+        List<File> pdfList = new ArrayList<>(findCustomPdf(new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + ".Important File" + File.separator + ".R " + folderName)));
+        FileAdapter fileAdapter = new FileAdapter(this, pdfList, this);
+        recyclerView.setAdapter(fileAdapter);
+    }
+
+    public ArrayList<File> findCustomPdf(File file) {
+        ArrayList<File> arrayList = new ArrayList<>();
+
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            if(files != null){
+                for (File singleFile : files) {
+                    if (singleFile.isDirectory() || singleFile.isHidden()) {
+                        arrayList.addAll(findCustomPdf(singleFile));
+                    } else {
+                        switch (custom) {
+                            case "files":
+                                if (singleFile.getName().endsWith(".pdf") || singleFile.getName().endsWith(".docx") || singleFile.getName().endsWith(".pptx") || singleFile.getName().endsWith(".xlsx") || singleFile.getName().endsWith(".zip") || singleFile.getName().endsWith(".txt")) {
+                                    arrayList.add(singleFile);
+                                }else{
+                                    showToastRed("No Files");
+                                }
+                                break;
+                            case "video":
+                                if (singleFile.getName().endsWith(".mp4")) {
+                                    arrayList.add(singleFile);
+                                }else{
+                                    showToastRed("No Videos");
+                                }
+                                break;
+                            case "audio":
+                                if (singleFile.getName().endsWith(".amr")) {
+                                    arrayList.add(singleFile);
+                                }else{
+                                    showToastRed("No Audios");
+                                }
+                                break;
+                            case "music":
+                                if (singleFile.getName().endsWith(".mp3")) {
+                                    arrayList.add(singleFile);
+                                }else{
+                                    showToastRed("No Musics");
+                                }
+                                break;
+                            case "pictures":
+                                if (singleFile.getName().endsWith(".jpg") || singleFile.getName().endsWith(".jpeg") || singleFile.getName().endsWith(".png")) {
+                                    arrayList.add(singleFile);
+                                }else{
+                                    showToastRed("No Pictures");
+                                }
+                                break;
+                        }
+
+                    }
+                }
+            }
+        }
+        return arrayList;
+    }
+
     @Override
     public void onFileSelected(File file) {
         Uri uri = FileProvider.getUriForFile(this, CreateNoteActivity.this.getApplicationContext().getPackageName() + ".provider", file);
@@ -3377,7 +3448,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         try {
             startActivity(pdfIntent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(CreateNoteActivity.this, "No Applications found to open this format file. You can download relevant application to view this file format", Toast.LENGTH_LONG).show();
+            showToastRed("No Applications found to open this format file. You can download relevant application to view this file format");
         }
     }
 

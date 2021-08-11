@@ -622,7 +622,6 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:id="@+id/refreshFile"
                     android:src="@drawable/language"
                     android:layout_marginTop="8dp"
                     android:layout_weight="0.3"
@@ -631,6 +630,7 @@
                     app:tint="@color/colorIcons" />
 
                 <ImageView
+                    android:id="@+id/refreshFile"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:src="@drawable/reload"
