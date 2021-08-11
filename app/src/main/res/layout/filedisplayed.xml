@@ -11,12 +11,10 @@
         android:id="@+id/textMyNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_2sdp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/_2sdp"
+        android:background="@color/colorDelete"
+        android:padding="@dimen/_6sdp"
         android:weightSum="2.0">
 
         <TextView

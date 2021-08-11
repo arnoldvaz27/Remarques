@@ -4,7 +4,27 @@
 
     <item
         android:id="@+id/chooseFile"
-        android:title="Choose File" />
+        android:title="Choose File"
+        app:showAsAction="never">
+
+        <menu>
+            <item android:title="Files"
+                android:id="@+id/file"
+                app:showAsAction="never"/>
+            <item android:title="Videos"
+                android:id="@+id/video"
+                app:showAsAction="never"/>
+            <item android:title="Audios"
+                android:id="@+id/audio"
+                app:showAsAction="never"/>
+            <item android:title="Music"
+                android:id="@+id/music"
+                app:showAsAction="never"/>
+            <item android:title="Pictures"
+                android:id="@+id/pictures"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
 
     <item android:title="Sort By"
         android:id="@+id/sortBy"
@@ -20,7 +40,7 @@
         </menu>
     </item>
 
-    <item android:title="Layout Type"
+ <!--   <item android:title="Layout Type"
         android:id="@+id/layoutType"
         app:showAsAction="never">
 
@@ -32,5 +52,5 @@
                 android:id="@+id/list"
                 app:showAsAction="never"/>
         </menu>
-    </item>
+    </item>-->
 </menu>

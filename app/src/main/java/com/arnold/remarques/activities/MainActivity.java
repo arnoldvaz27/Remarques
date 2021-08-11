@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
     private TextView myNote;
     private LinearLayoutManager linearLayoutManager, mainOption;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private String appOpen, fontSettings, richText, notesReturn, layoutType, fullLayoutOption;
+    private String appOpen, fontSettings, richText,linkText, notesReturn, layoutType, fullLayoutOption;
     private String fieldsVisibleImage, fieldsVisibleTitle, fieldsVisibleSubTitle, fieldsVisibleNote, fieldsVisibleDateCreated, fieldsVisibleDateEdited,
             fieldsVisibleURL, fieldsVisibleBackgroundColor,fieldsVisibleLayout;
     String keeper = "";
@@ -93,15 +93,13 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
 
     // search declaration
 
-    ScrollView scrollView;
-    TextView moreText,lessText;
-    LinearLayout firstLayout,secondLayout;
-    ImageView downImage,upImage;
+/*    TextView moreText,lessText;
+    LinearLayout firstLayout,secondLayout;*/
+    ImageView downImage;
     public static String createNoteFolder;
 
     //finding data
 
-    LinearLayout findingImage,findingTitle,findingSubTitle,findingNote,findingDateCreated,findingURL,findingBG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,22 +118,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         }
         editor6.apply();*/
 
-        scrollView = findViewById(R.id.horizontal);
-        moreText = findViewById(R.id.LayoutName3);
-        lessText = findViewById(R.id.LayoutName4);
-        firstLayout = findViewById(R.id.firstSmartLayout);
-        secondLayout = findViewById(R.id.secondSmartLayout);
         downImage = findViewById(R.id.noteDown);
-        upImage = findViewById(R.id.noteUp);
-
-        findingImage = findViewById(R.id.findImage);
-        findingTitle = findViewById(R.id.findTitle);
-        findingSubTitle = findViewById(R.id.findSubTitle);
-        findingNote = findViewById(R.id.findNote);
-        findingDateCreated = findViewById(R.id.findDateTime);
-        findingURL = findViewById(R.id.findURL);
-        findingBG = findViewById(R.id.findBG);
-
         First();
 
 
@@ -344,6 +327,16 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
             settingsRichText2.putString("rich text", "1");
         }
         settingsRichText2.apply();
+
+        SharedPreferences settingsLinksText = getSharedPreferences("settings", MODE_PRIVATE);
+        linkText = settingsLinksText.getString("link text", null);
+
+        final SharedPreferences settingsLinksText1 = getSharedPreferences("settings", MODE_PRIVATE);
+        final SharedPreferences.Editor settingsLinksText2 = settingsLinksText1.edit();
+        if (linkText == null) {
+            settingsLinksText2.putString("link text", "1");
+        }
+        settingsLinksText2.apply();
 
         inputSearch = findViewById(R.id.inputSearch);
         myNote = findViewById(R.id.MyNotes);
@@ -740,23 +733,10 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         downImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upImage.setVisibility(View.VISIBLE);
-                downImage.setVisibility(View.GONE);
-                scrollView.setVisibility(View.VISIBLE);
             }
         });
 
-        upImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                upImage.setVisibility(View.GONE);
-                downImage.setVisibility(View.VISIBLE);
-                scrollView.setVisibility(View.GONE);
-                inputSearch.setText("");
-            }
-        });
-
-        moreText.setOnClickListener(new View.OnClickListener() {
+        /*moreText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 moreText.setVisibility(View.GONE);
@@ -771,8 +751,8 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                 lessText.setVisibility(View.GONE);
                 moreText.setVisibility(View.VISIBLE);
             }
-        });
-        findingImage.setOnClickListener(new View.OnClickListener() {
+        });*/
+ /*       findingImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inputSearch.setText("");
@@ -834,7 +814,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
                 inputSearch.setSelection(inputSearch.getText().length());
                 inputSearch.requestFocus();
             }
-        });
+        });*/
 
     }
 

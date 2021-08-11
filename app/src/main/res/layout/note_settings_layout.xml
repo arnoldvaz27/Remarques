@@ -47,6 +47,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/richTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -59,7 +60,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="25dp"
             android:contentDescription="None"
             android:buttonTint="@color/colorWhite" />
 
@@ -74,5 +75,29 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/richTextLayout">
+
+        <CheckBox
+            android:id="@+id/linkTextBox"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="40dp"
+            android:contentDescription="None"
+            android:buttonTint="@color/colorWhite" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Web-Links and Phone"
+            android:textColor="@color/colorWhite"
+            android:textSize="17sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

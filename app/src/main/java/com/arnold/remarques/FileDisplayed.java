@@ -39,6 +39,7 @@ public class FileDisplayed extends AppCompatActivity implements onFileSelectList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorDelete));
         setContentView(R.layout.filedisplayed);
 
         runtimePermission();

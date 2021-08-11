@@ -46,6 +46,10 @@ public class Note implements Serializable {
     @ColumnInfo(name = "folder")
     private String folder;
 
+    @ColumnInfo(name = "password_state")
+    private String passwordState;
+
+
     public String getFolder() {
         return folder;
     }
@@ -140,6 +144,15 @@ public class Note implements Serializable {
 
     public void setWebLink(String webLink) {
         this.webLink = webLink;
+    }
+
+
+    public String getPasswordState() {
+        return passwordState;
+    }
+
+    public void setPasswordState(String passwordState) {
+        this.passwordState = passwordState;
     }
 
     @NonNull

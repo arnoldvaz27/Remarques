@@ -23,13 +23,14 @@ import com.arnold.remarques.database.NotesDatabase;
 
 public class AppSettings extends AppCompatActivity {
 
-    private CheckBox font1,font2,font3,font4,font5,font6,richTextBox,detailLayout,normalLayout;
-    private String fontSettings,richText,layoutType;
+    private CheckBox font1,font2,font3,font4,font5,font6,richTextBox,linksPhoneBox,detailLayout,normalLayout;
+    private String fontSettings,richText,linkPhoneText,layoutType;
     private LinearLayout reset;
     private AlertDialog dialogDeleteNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorDelete));
         setContentView(R.layout.app_settings);
         getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         font1 = findViewById(R.id.font1);
@@ -41,10 +42,14 @@ public class AppSettings extends AppCompatActivity {
         detailLayout = findViewById(R.id.detailLayout);
         normalLayout = findViewById(R.id.normalLayout);
         richTextBox = findViewById(R.id.richText);
+        linksPhoneBox = findViewById(R.id.LinksPhone);
         reset = findViewById(R.id.reset);
 
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
         richText = getShared3.getString("rich text", null);
+
+        SharedPreferences getShared4 = getSharedPreferences("settings", MODE_PRIVATE);
+        linkPhoneText = getShared4.getString("link text", null);
 
         SharedPreferences getShared2 = getSharedPreferences("settings", MODE_PRIVATE);
         fontSettings = getShared2.getString("font number", null);
@@ -105,11 +110,45 @@ public class AppSettings extends AppCompatActivity {
 
         checkLayoutType();
 
+        checkLinkText();
+
         choosingFont();
 
         choosingRichText();
 
+        choosingLinkText();
+
         choosingLayoutType();
+    }
+
+    private void choosingLinkText() {
+        final SharedPreferences shard2 = getSharedPreferences("settings",MODE_PRIVATE);
+        final SharedPreferences.Editor editor2 = shard2.edit();
+        linksPhoneBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(linksPhoneBox.isChecked())
+                {
+                    editor2.putString("link text", "2");
+                }
+                else
+                {
+                    editor2.putString("link text", "1");
+                }
+                editor2.apply();
+            }
+        });
+    }
+
+    private void checkLinkText() {
+        switch (linkPhoneText) {
+            case "1":
+                linksPhoneBox.setChecked(false);
+                break;
+            case "2":
+                linksPhoneBox.setChecked(true);
+                break;
+        }
     }
 
     private void checkRichText() {
