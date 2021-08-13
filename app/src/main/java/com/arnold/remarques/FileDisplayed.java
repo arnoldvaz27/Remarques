@@ -162,9 +162,13 @@ public class FileDisplayed extends AppCompatActivity implements onFileSelectList
         imageView = findViewById(R.id.menu_more);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(FileDisplayed.this,RecyclerView.VERTICAL,false));
-        List<File> pdfList = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));
-        FileAdapter fileAdapter = new FileAdapter(this, pdfList, this);
-        recyclerView.setAdapter(fileAdapter);
+        final String state = Environment.getExternalStorageState();
+        if ( Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state) ) {  // we can read the External Storage...
+            List<File> pdfList = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));
+            FileAdapter fileAdapter = new FileAdapter(this, pdfList, this);
+            recyclerView.setAdapter(fileAdapter);
+        }
+
     }
 
     @Override

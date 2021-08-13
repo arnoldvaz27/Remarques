@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/file.xml" value="0.21296296296296297" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/activity_create_note.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/addingbottomlayout.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/app_lock.xml" value="0.17407407407407408" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/app_settings.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/delete_app_date.xml" value="0.17407407407407408" />
@@ -14,6 +15,8 @@
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/filedisplayed.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/filetypelayout.xml" value="0.18333333333333332" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/imagemenu.xml" value="0.20520833333333333" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_add_label.xml" value="0.15185185185185185" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_add_url.xml" value="0.15185185185185185" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_delete_note.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_miscellaneous.xml" value="0.17407407407407408" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/layout_more_options.xml" value="0.17407407407407408" />
@@ -22,6 +25,7 @@
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/test.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/toast_green.xml" value="0.18333333333333332" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/toast_layout.xml" value="0.17407407407407408" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/trash.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/createnotefileoption.xml" value="0.1824074074074074" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/devicefiles.xml" value="0.17407407407407408" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/menu/displayfile.xml" value="0.15555555555555556" />

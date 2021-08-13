@@ -595,69 +595,86 @@
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintTop_toBottomOf="@+id/inputLabel"/>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:cardBackgroundColor="#F44336"
+                app:cardCornerRadius="@dimen/_10ssp"
+                app:layout_constraintBottom_toTopOf="@+id/fileLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputNote"
+                app:layout_constraintVertical_bias="0.0"
+                >
+                <TextView
+                    android:id="@+id/labels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFF"
+                    android:padding="@dimen/_3sdp"
+                    android:text="No Label"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    />
+            </androidx.cardview.widget.CardView>
             <LinearLayout
+                android:id="@+id/fileLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
                 android:orientation="horizontal"
-                android:id="@+id/fileLayout"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:weightSum="2"
-                app:layout_constraintTop_toBottomOf="@+id/inputNote">
+                app:layout_constraintTop_toBottomOf="@+id/inputNote"
+                tools:layout_editor_absoluteX="0dp">
+
                 <TextView
+                    android:id="@+id/textFileName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Files"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:singleLine="true"
+                    android:layout_weight="1.4"
                     android:ellipsize="marquee"
-                    android:layout_weight="1.1"
-                    android:textSize="@dimen/_14ssp"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="Files"
                     android:textColor="@color/colorWhite"
-                    android:id="@+id/textFileName" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/language"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginBottom="2dp"
-                    android:padding="5dp"
-                    app:tint="@color/colorIcons" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <ImageView
                     android:id="@+id/refreshFile"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/reload"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="0.3"
                     android:layout_marginBottom="2dp"
+                    android:layout_weight="0.3"
                     android:padding="5dp"
+                    android:src="@drawable/reload"
                     app:tint="@color/colorIcons" />
 
                 <ImageView
+                    android:id="@+id/fileMenuMore"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:id="@+id/fileMenuMore"
-                    android:src="@drawable/more_vert"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="0.3"
                     android:layout_marginBottom="2dp"
+                    android:layout_weight="0.3"
                     android:padding="5dp"
+                    android:src="@drawable/more_vert"
                     app:tint="@color/colorWhite" />
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler_view"
+                android:layout_marginBottom="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fileLayout">
-
             </androidx.recyclerview.widget.RecyclerView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -991,12 +1008,13 @@
                 android:layout_height="@dimen/_28sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:contentDescription="None"
                 android:padding="@dimen/_2sdp"
                 android:src="@drawable/underline"
                 app:tint="@color/colorIcons" />
 
-
+<!--
             <ImageView
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_28sdp"
@@ -1017,7 +1035,7 @@
                 android:contentDescription="None"
                 android:padding="@dimen/_2sdp"
                 android:src="@drawable/more_icons"
-                app:tint="@color/colorIcons" />
+                app:tint="@color/colorIcons" />-->
 
 
         </LinearLayout>

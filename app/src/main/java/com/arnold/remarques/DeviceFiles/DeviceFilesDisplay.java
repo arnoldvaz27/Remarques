@@ -65,10 +65,22 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
                     if (item.getItemId() == R.id.text) {
                         TextFiles();
                     }
+                    if (item.getItemId() == R.id.sharedFiles) {
+                        SharedFiles();
+                    }
                     return true;
                 });
             }
         });
+    }
+
+    private void SharedFiles() {
+        fileEnding = "png";
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"Shared Images")));
+        DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
+        recyclerView.setAdapter(fileAdapter);
     }
 
     private void QRCodes() {

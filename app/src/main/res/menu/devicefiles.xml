@@ -8,6 +8,9 @@
         android:id="@+id/favourite"
         android:title="Favorite Pictures" />
     <item
+        android:id="@+id/sharedFiles"
+        android:title="Shared Images" />
+    <item
         android:id="@+id/pdf"
         android:title="PDF Files" />
     <item

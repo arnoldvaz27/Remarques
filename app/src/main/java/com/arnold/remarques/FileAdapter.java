@@ -22,6 +22,11 @@ import java.util.List;
 import static com.arnold.remarques.activities.CreateNoteActivity.folderName;
 import static com.arnold.remarques.activities.CreateNoteActivity.viewHolder;
 
+import com.arnold.remarques.DeviceFiles.DeviceFilesDisplay;
+import com.arnold.remarques.activities.AppSettings;
+import com.arnold.remarques.activities.MainActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 
 public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
 
@@ -30,6 +35,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
     private final onFileSelectListener onFileSelectListener;
     public String end = "";
     private View sheetView;
+    private BottomSheetDialog bottomSheetDialog;
 
     @NonNull
     @Override
@@ -176,7 +182,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
     private void adding(File file) {
         File SourceFile = new File(file.getAbsolutePath());
 
-        File DestinationFile = new File(Environment.getExternalStorageDirectory().toString()+File.separator + "Remarques"+File.separator+ ".R "+folderName+ File.separator + file.getName());
+        File DestinationFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "Remarques" + File.separator+".Important File" +File.separator+".R " + folderName+ File.separator + file.getName());
 
         if(SourceFile.renameTo(DestinationFile))
         {
@@ -187,7 +193,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileViewHolder> {
             Toast.makeText(context, "Not moved", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public int getItemCount() {
