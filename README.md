@@ -71,6 +71,6 @@ Requests that include the following features will be given priority ![Software t
 
 ## License under MIT ![License](https://img.shields.io/badge/License-MIT-red)    ![Copyright](https://img.shields.io/badge/Copyright%202021-Arnold%20Alwyn%20Vaz-red)
 
-Check [here](https://github.com/arnoldvaz27/Remarques/blob/master/LICENSE) for more details 
+Check [here](https://arnoldvaz27.github.io/LICENSE) for more details 
 
 
