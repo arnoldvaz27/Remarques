@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements NotesListeners {
         First();
 
 
+
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();

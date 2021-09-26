@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/clip.xml" value="0.1787037037037037" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/file.xml" value="0.21296296296296297" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/menu_dot.xml" value="0.1925925925925926" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/more_vert.xml" value="0.1925925925925926" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/more_vertical_line.xml" value="0.1925925925925926" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/user_filled.xml" value="0.1935185185185185" />
+        <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/drawable/user_outline.xml" value="0.1935185185185185" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/activity_create_note.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/addingbottomlayout.xml" value="0.20520833333333333" />
         <entry key="..\:/Github Android Codes/Career Projects/Remarques/Remarques/app/src/main/res/layout/app_lock.xml" value="0.17407407407407408" />

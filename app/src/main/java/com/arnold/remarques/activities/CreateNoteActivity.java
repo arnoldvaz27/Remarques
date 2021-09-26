@@ -68,6 +68,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arnold.remarques.DeviceFiles.DeviceFilesDisplay;
 import com.arnold.remarques.FileDisplayed;
 import com.arnold.remarques.FileAdapter;
 import com.arnold.remarques.R;
@@ -109,7 +110,7 @@ import static com.arnold.remarques.activities.MainActivity.createNoteFolder;
 public class CreateNoteActivity extends AppCompatActivity implements onFileSelectListener {
 
     public static EditText inputNoteTitle, inputNoteSubTitle, inputNoteText, inputSearch;
-    private TextView textDateTime, textDateTime2,labels;
+    private TextView textDateTime, textDateTime2, labels, TextFileName;
     private ImageView imageSave, imageMoreOption;
     private View viewSubTitleIndicator;
     private HorizontalScrollView richTextLayout;
@@ -118,16 +119,16 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
     private TextView textWebURL;
     private BottomSheetDialog bottomSheetDialog, addingClip, addingFileType, addingRecorder;
     private String selectedNoteColor;
-    private ImageView imageNote, imageDown, imageUp, imageSpeak, imageLock, imageUnLock, imageCopy, imagePaste, imageShare, imageColorLens, imageSearchClose,
+    private ImageView imageNote, imageDown, imageUp, imageSpeak, imageLock, imageUnLock, imageCopy, imagePaste, imageFiles, imageShare, imageColorLens, imageSearchClose,
             imageSearch, cancelSearch, imageSearchPic, imageScan, imageGoSearch, imageDefault, imageDefaultBackground, MoreImage, MoreUrl, imageSettings, imageClip;
     private ImageView NumberText, BulletText, circleText, squareText, starText, alphabetText, alphabetSmallText, rightText, wrongText, checkBoxText;
-    private String selectedImagePath, selectedImagePath2, toShare,custom;
+    private String selectedImagePath, selectedImagePath2, toShare, custom;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private static final int CAMERA_REQUEST = 1888;
     private View sheetView;
     private String show = "No";
-    private AlertDialog dialogAddURL,dialogLabelURL;
+    private AlertDialog dialogAddURL, dialogLabelURL;
     private AlertDialog dialogDeleteNote, dialogSettingsNote, dialogResetNote, UrlOption, ImageOption;
 
     private final int REQ_CODE_TITLE = 100;
@@ -219,6 +220,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         imageUnLock = findViewById(R.id.imageUnLock);
         imageCopy = findViewById(R.id.imageCopy);
         imagePaste = findViewById(R.id.imagePaste);
+        imageFiles = findViewById(R.id.imageFiles);
         imageShare = findViewById(R.id.imageShare);
 //        imageNewNote = findViewById(R.id.imageNewNote);
         imageColorLens = findViewById(R.id.imageColorLens);
@@ -252,7 +254,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 //        moreIcons = findViewById(R.id.more_icons);
         imageClip = findViewById(R.id.imageClip);
         mDefaultColor = 0;
+        mDefaultTextColor = 0;
         fileMenu = findViewById(R.id.fileMenuMore);
+        TextFileName = findViewById(R.id.textFileName);
 
         sdCard = Environment.getExternalStorageDirectory();
         SharedPreferences getShared3 = getSharedPreferences("settings", MODE_PRIVATE);
@@ -497,13 +501,19 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 inputNoteText.setSelection(inputNoteText.getText().length());
             }
         });
+        imageFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), DeviceFilesDisplay.class));
+            }
+        });
 
         inputNoteText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(TextUtils.isEmpty(inputNoteText.getText().toString())){
+                if (TextUtils.isEmpty(inputNoteText.getText().toString())) {
                     showToastRed("There is no text to copy");
-                }else{
+                } else {
                     String toCopy = inputNoteText.getText().toString();
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("Note Text", toCopy);
@@ -517,9 +527,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         inputNoteTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(TextUtils.isEmpty(inputNoteTitle.getText().toString())){
+                if (TextUtils.isEmpty(inputNoteTitle.getText().toString())) {
                     showToastRed("There is no text to copy");
-                }else{
+                } else {
                     String toCopy = inputNoteTitle.getText().toString();
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("Title", toCopy);
@@ -533,9 +543,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         inputNoteSubTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(TextUtils.isEmpty(inputNoteSubTitle.getText().toString())){
+                if (TextUtils.isEmpty(inputNoteSubTitle.getText().toString())) {
                     showToastRed("There is no text to copy");
-                }else{
+                } else {
                     String toCopy = inputNoteSubTitle.getText().toString();
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("Sub Title", toCopy);
@@ -650,6 +660,14 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             public void onClick(View v) {
                 Parent.setBackgroundColor(ContextCompat.getColor(CreateNoteActivity.this, R.color.colorPrimary));
                 mDefaultColor = Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorPrimary)));
+                mDefaultTextColor = Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite)));
+                inputNoteTitle.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                inputNoteSubTitle.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                inputNoteText.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                textDateTime.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                textDateTime2.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                labels.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
+                TextFileName.setTextColor(Integer.parseInt(String.valueOf(getResources().getColor(R.color.colorWhite))));
             }
         });
 
@@ -713,14 +731,20 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                                                     // which is returned
                                                     // by the color
                                                     // picker
-                                                    mDefaultColor = color;
+                                                    mDefaultTextColor = color;
 
                                                     // now as soon as
                                                     // the dialog closes
                                                     // set the preview
                                                     // box to returned
                                                     // color
-                                                    Parent.setBackgroundColor(mDefaultColor);
+                                                    inputNoteTitle.setTextColor(mDefaultTextColor);
+                                                    inputNoteSubTitle.setTextColor(mDefaultTextColor);
+                                                    inputNoteText.setTextColor(mDefaultTextColor);
+                                                    textDateTime.setTextColor(mDefaultTextColor);
+                                                    textDateTime2.setTextColor(mDefaultTextColor);
+                                                    labels.setTextColor(mDefaultTextColor);
+                                                    TextFileName.setTextColor(mDefaultTextColor);
                                                 }
                                             });
 
@@ -882,10 +906,14 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         findViewById(R.id.imageQRCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    createQRCode();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                if (TextUtils.isEmpty(inputNoteTitle.getText().toString()) || TextUtils.isEmpty(inputNoteText.getText().toString())) {
+                    showToastRed("Qr Can not be created empty");
+                } else {
+                    try {
+                        createQRCode();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         });
@@ -1081,6 +1109,16 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             Parent.setBackgroundColor(Integer.parseInt(alreadyAvailableNote.getBackgroundColor()));
             mDefaultColor = Integer.parseInt(alreadyAvailableNote.getBackgroundColor());
         }
+        if (alreadyAvailableNote != null && alreadyAvailableNote.getTextColor() != null && !alreadyAvailableNote.getTextColor().trim().isEmpty()) {
+            mDefaultTextColor = Integer.parseInt(alreadyAvailableNote.getTextColor());
+            inputNoteTitle.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            inputNoteSubTitle.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            inputNoteText.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            textDateTime.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            textDateTime2.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            labels.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+            TextFileName.setTextColor(Integer.parseInt(alreadyAvailableNote.getTextColor()));
+        }
         if (alreadyAvailableNote != null && alreadyAvailableNote.getColor() != null && !alreadyAvailableNote.getColor().trim().isEmpty()) {
             ChangingDBBackground();
         }
@@ -1239,7 +1277,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 inputNoteText.requestFocus();
             }
         });
-
+        
         sheetView.findViewById(R.id.layoutSelectFile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1271,7 +1309,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.show();*/
                 fileFormat = "File";
                 fileEnd = "pdf";
-                startActivity(new Intent(getApplicationContext(),FileDisplayed.class));
+                startActivity(new Intent(getApplicationContext(), FileDisplayed.class));
             }
         });
 
@@ -1301,7 +1339,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.show();*/
                 fileFormat = "Audio";
                 fileEnd = "amr";
-                startActivity(new Intent(getApplicationContext(),FileDisplayed.class));
+                startActivity(new Intent(getApplicationContext(), FileDisplayed.class));
             }
         });
 
@@ -1333,7 +1371,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.show();*/
                 fileFormat = "Video";
                 fileEnd = "mp4";
-                startActivity(new Intent(getApplicationContext(),FileDisplayed.class));
+                startActivity(new Intent(getApplicationContext(), FileDisplayed.class));
             }
         });
 
@@ -1365,7 +1403,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                 popup.show();*/
                 fileFormat = "Music";
                 fileEnd = "mp3";
-                startActivity(new Intent(getApplicationContext(),FileDisplayed.class));
+                startActivity(new Intent(getApplicationContext(), FileDisplayed.class));
             }
         });
 
@@ -1848,6 +1886,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             linearLayout4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     try {
                         File docsFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Remarques" + File.separator + "QR Codes");
                         boolean success = true;
@@ -1915,8 +1954,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             if (dialogSettingsNote.getWindow() != null) {
                 dialogSettingsNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
-            final CheckBox textBox,textBox1;
-            String richText,linkText;
+            final CheckBox textBox, textBox1;
+            String richText, linkText;
             textBox = view.findViewById(R.id.richTextBox);
             textBox1 = view.findViewById(R.id.linkTextBox);
 
@@ -2141,7 +2180,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         bottomSheetDialog.show();
     }*/
     private void Sharing(File file) {
-        Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider",file);
+        Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
         Intent pdfIntent = new Intent(Intent.ACTION_SEND);
         pdfIntent.setDataAndType(uri, "image/*");
 
@@ -2681,8 +2720,8 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
             codeQrImage.scaleAbsolute(350, 350);
             document.add(codeQrImage);
             document.newPage();
-
             document.close();
+            showToast("Qr Code created successfully");
         } else {
             showToastRed("Error");
         }
@@ -2850,6 +2889,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
         note.setDateTime(textDateTime.getText().toString());
         note.setFolder(folderName);
         note.setBackgroundColor(String.valueOf(mDefaultColor));
+        note.setTextColor(String.valueOf(mDefaultTextColor));
         note.setColor(selectedNoteColor);
         note.setNoteLabel(labels.getText().toString());
 
@@ -3098,9 +3138,9 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                     } else {
                         if (labels.getText().toString().equals("No Label")) {
                             labels.setText(inputLabel.getText().toString());
-                        }else{
+                        } else {
                             String string = labels.getText().toString();
-                            labels.setText(string + " , "+inputLabel.getText().toString());
+                            labels.setText(string + " , " + inputLabel.getText().toString());
                         }
                         dialogLabelURL.dismiss();
                         inputLabel.setText("");
@@ -3367,7 +3407,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
         if (file.exists()) {
             File[] files = file.listFiles();
-            if(files != null){
+            if (files != null) {
                 for (File singleFile : files) {
                     if (singleFile.isDirectory() || singleFile.isHidden()) {
                         arrayList.addAll(findPdf(singleFile));
@@ -3396,7 +3436,7 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
         if (file.exists()) {
             File[] files = file.listFiles();
-            if(files != null){
+            if (files != null) {
                 for (File singleFile : files) {
                     if (singleFile.isDirectory() || singleFile.isHidden()) {
                         arrayList.addAll(findCustomPdf(singleFile));
@@ -3405,35 +3445,35 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
                             case "file":
                                 if (singleFile.getName().endsWith(".pdf") || singleFile.getName().endsWith(".docx") || singleFile.getName().endsWith(".pptx") || singleFile.getName().endsWith(".xlsx") || singleFile.getName().endsWith(".zip") || singleFile.getName().endsWith(".txt")) {
                                     arrayList.add(singleFile);
-                                }else{
+                                } else {
                                     showToastRed("No Files");
                                 }
                                 break;
                             case "video":
                                 if (singleFile.getName().endsWith(".mp4")) {
                                     arrayList.add(singleFile);
-                                }else{
+                                } else {
                                     showToastRed("No Videos");
                                 }
                                 break;
                             case "audio":
                                 if (singleFile.getName().endsWith(".amr")) {
                                     arrayList.add(singleFile);
-                                }else{
+                                } else {
                                     showToastRed("No Audios");
                                 }
                                 break;
                             case "music":
                                 if (singleFile.getName().endsWith(".mp3")) {
                                     arrayList.add(singleFile);
-                                }else{
+                                } else {
                                     showToastRed("No Musics");
                                 }
                                 break;
                             case "pictures":
                                 if (singleFile.getName().endsWith(".jpg") || singleFile.getName().endsWith(".jpeg") || singleFile.getName().endsWith(".png")) {
                                     arrayList.add(singleFile);
-                                }else{
+                                } else {
                                     showToastRed("No Pictures");
                                 }
                                 break;
@@ -3441,10 +3481,10 @@ public class CreateNoteActivity extends AppCompatActivity implements onFileSelec
 
                     }
                 }
-            }else{
+            } else {
                 showToastRed("Nothing to display");
             }
-        }else{
+        } else {
             showToastRed("Files not available");
         }
         return arrayList;

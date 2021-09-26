@@ -14,4 +14,8 @@
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <style name="OverlayPrimaryColorRed">
+        <item name="colorPrimary">@color/colorDelete</item>
+        <item name="colorPrimaryDark">@color/colorNoteColor7</item>
+    </style>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.arnold.remarques.FileAdapter;
 import com.arnold.remarques.FileDisplayed;
 import com.arnold.remarques.R;
+import com.arnold.remarques.activities.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private View sheetView;
     String fileEnding = "";
     private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,10 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void SharedFiles() {
         fileEnding = "png";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager = new LinearLayoutManager(DeviceFilesDisplay.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"Shared Images")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -86,7 +91,10 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void QRCodes() {
         fileEnding = "pdf";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager = new LinearLayoutManager(DeviceFilesDisplay.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"QR Codes")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -95,7 +103,10 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void TextFiles() {
         fileEnding = "txt";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager = new LinearLayoutManager(DeviceFilesDisplay.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"Text Files")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -104,7 +115,9 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void FavouritePicture() {
         fileEnding = "png";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"Favorite Pictures")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -113,7 +126,10 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void PDFFiles() {
         fileEnding = "pdf";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager = new LinearLayoutManager(DeviceFilesDisplay.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"PDF Files")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -122,7 +138,10 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
     private void Gallery() {
         fileEnding = "png";
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceFilesDisplay.this,RecyclerView.VERTICAL,false));
+        linearLayoutManager = new LinearLayoutManager(DeviceFilesDisplay.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         List<File> pdfList = new ArrayList<>(findPdf(new File(Environment.getExternalStorageDirectory(),"Remarques"+File.separator+"Gallery")));
         DeviceFileAdapter fileAdapter = new DeviceFileAdapter(this, pdfList, this);
         recyclerView.setAdapter(fileAdapter);
@@ -132,8 +151,7 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
         ArrayList<File> arrayList = new ArrayList<>();
         if(file.exists()){
             File[] files = file.listFiles();
-
-            if(files == null){
+            if(files == null || files.length==0){
                 emptyText.setVisibility(View.VISIBLE);
                 empty.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
@@ -151,8 +169,6 @@ public class DeviceFilesDisplay extends AppCompatActivity implements onDeviceFil
                     }
                 }
             }
-            assert files != null;
-
         }else{
             emptyText.setVisibility(View.VISIBLE);
             empty.setVisibility(View.VISIBLE);
