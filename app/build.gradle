@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
     dataBinding.enabled = true
     defaultConfig {
-        applicationId "com.arnold.remarques"
+        applicationId "com.arnoldvaz27.remarques"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
